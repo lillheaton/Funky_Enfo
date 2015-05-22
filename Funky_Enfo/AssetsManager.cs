@@ -26,9 +26,9 @@ namespace FunkyEnfo
 
         private void LoadTextures()
         {
-            this.Texture2Ds.Add("Tiles", this.LoadSpritesheet("Tiles/tiles_spritesheet"));
-            this.Texture2Ds.Add("Revenant_Move", this.LoadSpritesheet("Revenant/Move/revenant_moveSpritesheet"));
-            this.Texture2Ds.Add("Whisp_Attack", this.LoadSpritesheet("Whisp/Attack/wisp_attacksheet"));
+            this.Texture2Ds.Add("Tiles", this.LoadSpritesheet("Tiles/tiles_spritesheet", 0));
+            this.Texture2Ds.Add("Revenant_Move", this.LoadSpritesheet("Revenant/Move/revenant_moveSpritesheet", 8));
+            this.Texture2Ds.Add("Whisp_Attack", this.LoadSpritesheet("Whisp/Attack/wisp_attacksheet", 8));
         }
 
         private void LoadFonts()
@@ -36,7 +36,7 @@ namespace FunkyEnfo
             this.Fonts.Add("MyFont", contentManager.Load<SpriteFont>("Fonts/MyFont"));
         }
 
-        private Spritesheet2D LoadSpritesheet(string path)
+        private Spritesheet2D LoadSpritesheet(string path, int perAnimation)
         {
             var spritesheet = new Spritesheet2D { Texture = contentManager.Load<Texture2D>(path), SpritePosition = new Dictionary<string, Vector2>() };
             var data = ReadFile(string.Format("Content/{0}.txt", path));
@@ -52,6 +52,7 @@ namespace FunkyEnfo
             }
 
             spritesheet.Names = names.ToArray();
+            spritesheet.PerAnimation = perAnimation;
             return spritesheet;
         }
 

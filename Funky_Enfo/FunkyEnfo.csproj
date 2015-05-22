@@ -35,9 +35,12 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnimatedSprite.cs" />
     <Compile Include="AssetsManager.cs" />
     <Compile Include="Camera.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="Engines\TileEngine.cs" />
+    <Compile Include="Models\Wall.cs" />
     <Compile Include="Models\Spritesheet2D.cs" />
     <Compile Include="Models\Tile.cs" />
     <Compile Include="Screens\Enfo.cs" />
@@ -50,6 +53,12 @@
     <Compile Include="Units\Revenant.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Lillheaton.Monogame.Dijkstra">
+      <HintPath>..\Libs\Lillheaton.Monogame.Dijkstra.dll</HintPath>
+    </Reference>
+    <Reference Include="Lillheaton.Monogame.Steering">
+      <HintPath>..\Libs\Lillheaton.Monogame.Steering.dll</HintPath>
+    </Reference>
     <Reference Include="OpenTK">
       <HintPath>$(MSBuildExtensionsPath)\..\MonoGame\v3.0\Assemblies\WindowsGL\OpenTK.dll</HintPath>
     </Reference>

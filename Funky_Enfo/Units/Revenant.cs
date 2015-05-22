@@ -1,4 +1,6 @@
-﻿using FunkyEnfo.Models;
+﻿using System;
+
+using FunkyEnfo.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -21,13 +23,15 @@ namespace FunkyEnfo.Units
         {
             this.GetMouseInput();
 
-            if (Position != TargetPosition)
-            {
-                var velovity = TargetPosition - Position;
-                velovity = Vector2.Normalize(velovity) * 5;
+            //var direction = this.Position2D - this.TargetPosition;
+            //direction.Normalize();
 
-                Position = Vector2.Add(Position, velovity);
-            }
+            //var rotation = Math.Atan2(direction.X, direction.Y);
+
+            //var data = MathHelper.PiOver4 * (float)Math.Round(45 / MathHelper.PiOver4);
+
+            this.SteeringBehavior.Arrive(new Vector3(TargetPosition, 0));
+            this.SteeringBehavior.Update(gameTime);
         }
 
         private void GetMouseInput()

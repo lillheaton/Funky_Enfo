@@ -10,5 +10,6 @@ namespace FunkyEnfo.Models
         public Dictionary<string, Vector2> SpritePosition { get; set; }
         public float SpriteSize { get; set; }
         public string[] Names { get; set; }
+        public int PerAnimation { get; set; }
     }
 }
