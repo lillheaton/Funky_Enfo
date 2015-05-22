@@ -8,8 +8,8 @@
     <ProjectGuid>{E0B986FD-E8C1-47D5-93E4-CB78E19E7AD7}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Funky.Enfo</RootNamespace>
-    <AssemblyName>Funky.Enfo</AssemblyName>
+    <RootNamespace>FunkyEnfo</RootNamespace>
+    <AssemblyName>FunkyEnfo</AssemblyName>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -36,6 +36,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssetsManager.cs" />
+    <Compile Include="Engines\TileEngine.cs" />
+    <Compile Include="Models\Spritesheet2D.cs" />
+    <Compile Include="Models\Tile.cs" />
     <Compile Include="Screens\Enfo.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Screens\BaseScreen.cs" />
@@ -59,10 +62,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Map.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Revenant\Move\revenant_moveSpritesheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Revenant\Move\revenant_moveSpritesheet.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Tiles\tiles_spritesheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Tiles\tiles_spritesheet.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Whisp\Attack\wisp_attacksheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Whisp\Attack\wisp_attacksheet.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Content\" />
+    <None Include="Content\Fonts\MyFont.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

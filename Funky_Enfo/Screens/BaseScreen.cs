@@ -1,10 +1,18 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Funky.Enfo.Screens
+namespace FunkyEnfo.Screens
 {
     public abstract class BaseScreen
     {
-        public abstract void Draw(GameTime gameTime, AssetsManager assetsManager);
+        public AssetsManager Assets { get; private set; }
+
+        protected BaseScreen(AssetsManager assets)
+        {
+            this.Assets = assets;
+        }
+
+        public abstract void Draw(SpriteBatch spriteBatch, GameTime gameTime);
         public abstract void Update(GameTime gameTime);
     }
 }

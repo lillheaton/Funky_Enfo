@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace Funky.Enfo
+namespace FunkyEnfo
 {
 #if WINDOWS || LINUX
     /// <summary>

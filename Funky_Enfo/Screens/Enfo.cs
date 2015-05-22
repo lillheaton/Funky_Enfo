@@ -1,21 +1,26 @@
-﻿using System;
+﻿using FunkyEnfo.Engines;
 
-namespace Funky.Enfo.Screens
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace FunkyEnfo.Screens
 {
     public class Enfo : BaseScreen
     {
-        public Enfo()
+        private TileEngine tileEngine;
+
+        public Enfo(AssetsManager assets) : base(assets)
         {
+            this.tileEngine = new TileEngine(assets);
         }
 
-        public override void Draw(Microsoft.Xna.Framework.GameTime gameTime, AssetsManager assetsManager)
+        public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            throw new NotImplementedException();
+            tileEngine.Draw(spriteBatch, gameTime);
         }
 
-        public override void Update(Microsoft.Xna.Framework.GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
         }
     }
 }

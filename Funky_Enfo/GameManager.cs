@@ -1,9 +1,9 @@
-﻿using Funky.Enfo.Screens;
+﻿using FunkyEnfo.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Funky.Enfo
+namespace FunkyEnfo
 {
     public class GameManager : Game
     {
@@ -14,42 +14,45 @@ namespace Funky.Enfo
 
         public GameManager() : base()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            this.graphics = new GraphicsDeviceManager(this);
+            this.Content.RootDirectory = "Content";
         }
 
         protected override void Initialize()
         {
             base.Initialize();
-            this.currentScreen = new Screens.Enfo();
+            this.currentScreen = new Enfo(assetsManager);
         }
 
+        // This method is called before Initialize
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            assetsManager = new AssetsManager(Content);
+            this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
+            this.assetsManager = new AssetsManager(this.Content);
         }
 
         protected override void UnloadContent()
         {
+            Content.Unload();
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                this.Exit();
 
-            currentScreen.Update(gameTime);
+            this.currentScreen.Update(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            this.GraphicsDevice.Clear(Color.CornflowerBlue);            
 
-            currentScreen.Draw(gameTime, assetsManager);
+            spriteBatch.Begin();
+            this.currentScreen.Draw(spriteBatch, gameTime);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
