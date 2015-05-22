@@ -24,7 +24,7 @@ namespace FunkyEnfo
             Position += direction;
         }
 
-        public Matrix GetTransform()
+        public Matrix GetViewMatrix()
         {
             var translationMatrix = Matrix.CreateTranslation(new Vector3(Position.X, Position.Y, 0));
             var rotationMatrix = Matrix.CreateRotationZ(Rotation);
@@ -32,6 +32,11 @@ namespace FunkyEnfo
             var originMatrix = Matrix.CreateTranslation(new Vector3(Origin.X, Origin.Y, 0));
 
             return translationMatrix * rotationMatrix * scaleMatrix * originMatrix;
+        }
+
+        public Vector2 ScreenToWorld(Vector2 vec)
+        {
+            return Vector2.Transform(vec, Matrix.Invert(GetViewMatrix()));
         }
     }
 }

@@ -15,12 +15,15 @@ namespace FunkyEnfo
         public GameManager() : base()
         {
             this.graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1200;
+            graphics.PreferredBackBufferHeight = 900;
             this.Content.RootDirectory = "Content";
         }
 
         protected override void Initialize()
         {
             base.Initialize();
+            this.IsMouseVisible = true;
             this.currentScreen = new Enfo(assetsManager);
         }
 
