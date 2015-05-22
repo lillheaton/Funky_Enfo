@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AssetsManager.cs" />
+    <Compile Include="Camera.cs" />
     <Compile Include="Engines\TileEngine.cs" />
     <Compile Include="Models\Spritesheet2D.cs" />
     <Compile Include="Models\Tile.cs" />

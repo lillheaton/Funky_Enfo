@@ -42,18 +42,13 @@ namespace FunkyEnfo
                 this.Exit();
 
             this.currentScreen.Update(gameTime);
-
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             this.GraphicsDevice.Clear(Color.CornflowerBlue);            
-
-            spriteBatch.Begin();
             this.currentScreen.Draw(spriteBatch, gameTime);
-            spriteBatch.End();
-
             base.Draw(gameTime);
         }
     }
