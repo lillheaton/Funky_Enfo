@@ -4,12 +4,12 @@ namespace FunkyEnfo
     public enum Direction
     {
         North = 0,
-        South = 1,
+        NorthEast = 1,
         East = 2,
-        West = 3,
-        NorthEast = 4,
-        NorthWest = 5,
-        SouthEast = 6,
-        SouthWest = 7
+        SouthEast = 3,
+        South = 4,
+        SouthWest = 5,
+        West = 6,
+        NorthWest = 7
     }
 }
