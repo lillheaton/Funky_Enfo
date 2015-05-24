@@ -13,7 +13,6 @@ namespace FunkyEnfo.Units
         {
             this.Position2D = position;
             this.TargetPosition = position;
-            this.DrawForces = true;
         }
 
         public override void Update(GameTime gameTime)
@@ -24,9 +23,6 @@ namespace FunkyEnfo.Units
             this.SteeringBehavior.Seek(new Vector3(TargetPosition, 0));
             this.SteeringBehavior.CollisionAvoidance(this.Screen.TileEngine.Obstacles);
             this.SteeringBehavior.Update(gameTime);
-
-            //Console.WriteLine("Boid position: {0} ----- First obstacle {1} ", this.Position2D, this.Screen.TileEngine.Obstacles[0].Center);
-            Console.WriteLine("Mouse position: {0}", Mouse.GetState().Position);
         }
 
         private void GetMouseInput()

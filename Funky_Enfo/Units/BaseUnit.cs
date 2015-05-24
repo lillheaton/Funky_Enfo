@@ -13,7 +13,7 @@ namespace FunkyEnfo.Units
     public abstract class BaseUnit : IBoid
     {
         public Direction Direction { get; protected set; }
-
+        
         public SteeringBehavior SteeringBehavior { get; private set; }
         public Vector3 Position { get { return new Vector3(this.Position2D, 0); } set { this.Position2D = new Vector2(value.X, value.Y); } }
         public Vector2 Position2D { get; set; }
@@ -79,7 +79,6 @@ namespace FunkyEnfo.Units
         private void Forces(SpriteBatch spriteBatch)
         {
             const int Scale = 100;
-            //var drawVec = new Vector2(this.Position2D.X + SourceRectangle.Width / 2f, this.Position2D.Y + SourceRectangle.Height / 2f);
             var drawVec = this.Position2D;
             var velocityForce = Vector2.Normalize(new Vector2(Velocity.X, Velocity.Y));
             var steeringForce = Vector2.Normalize(new Vector2(this.SteeringBehavior.Steering.X, this.SteeringBehavior.Steering.Y));
