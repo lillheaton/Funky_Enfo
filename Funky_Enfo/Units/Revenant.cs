@@ -1,20 +1,19 @@
-﻿using FunkyEnfo.Models;
+﻿using System;
+using FunkyEnfo.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace FunkyEnfo.Units
 {
     public class Revenant : BaseUnit
     {
-        private Camera camera;
-        private Dictionary<string, Spritesheet2D> spritesheets;
         private MouseState oldMouseState;
         
-        public Revenant(Camera camera, Dictionary<string, Spritesheet2D> spritesheets) : base(spritesheets["Revenant_Move"])
+        public Revenant(Vector2 position, Enfo enfo) : base(enfo.Assets.Spritesheets["Revenant_Move"], enfo)
         {
-            this.camera = camera;
-            this.spritesheets = spritesheets;
+            this.Position2D = position;
+            this.TargetPosition = position;
+            this.DrawForces = true;
         }
 
         public override void Update(GameTime gameTime)
@@ -22,8 +21,12 @@ namespace FunkyEnfo.Units
             this.GetMouseInput();
             this.Direction = CalculateDirection();
 
-            this.SteeringBehavior.Arrive(new Vector3(TargetPosition, 0));
+            this.SteeringBehavior.Seek(new Vector3(TargetPosition, 0));
+            this.SteeringBehavior.CollisionAvoidance(this.Screen.TileEngine.Obstacles);
             this.SteeringBehavior.Update(gameTime);
+
+            //Console.WriteLine("Boid position: {0} ----- First obstacle {1} ", this.Position2D, this.Screen.TileEngine.Obstacles[0].Center);
+            Console.WriteLine("Mouse position: {0}", Mouse.GetState().Position);
         }
 
         private void GetMouseInput()
@@ -32,7 +35,7 @@ namespace FunkyEnfo.Units
 
             if (newMouseState.RightButton == ButtonState.Released && oldMouseState.RightButton == ButtonState.Pressed)
             {
-                this.TargetPosition = camera.ScreenToWorld(newMouseState.Position.ToVector2());
+                this.TargetPosition = this.Screen.Camera.ScreenToWorld(newMouseState.Position.ToVector2());
             }
 
             oldMouseState = newMouseState;

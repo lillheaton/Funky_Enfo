@@ -1,5 +1,5 @@
-﻿
-using FunkyEnfo.Models;
+﻿using FunkyEnfo.Models;
+using FunkyEnfo.Screens;
 using FunkyEnfo.Units;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,13 +10,11 @@ namespace FunkyEnfo
     public class UnitManager
     {
         public List<BaseUnit> Units { get; set; }
-        private AssetsManager assets;
-        private Camera camera;
+        private Enfo enfoScreen;
 
-        public UnitManager(Camera camera, AssetsManager assets)
+        public UnitManager(Enfo screen)
         {
-            this.assets = assets;
-            this.camera = camera;
+            this.enfoScreen = screen;
             this.Units = new List<BaseUnit>();
 
             this.LoadUnits();
@@ -24,10 +22,7 @@ namespace FunkyEnfo
 
         private void LoadUnits()
         {
-            var revenantAssets = new Dictionary<string, Spritesheet2D>();
-            revenantAssets.Add("Revenant_Move", assets.Texture2Ds["Revenant_Move"]);
-
-            this.Units.Add(new Revenant(camera, revenantAssets));            
+            this.Units.Add(new Revenant(new Vector2(120,120), enfoScreen));
         }
 
         public void Update(GameTime gameTime)

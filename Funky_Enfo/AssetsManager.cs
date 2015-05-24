@@ -9,26 +9,39 @@ namespace FunkyEnfo
 {
     public class AssetsManager
     {
-        public Dictionary<string, Spritesheet2D> Texture2Ds { get; private set; }
+        public Dictionary<string, Spritesheet2D> Spritesheets { get; private set; }
         public Dictionary<string, SpriteFont> Fonts { get; private set; }
+        public Dictionary<string, Texture2D> Textures { get; private set; }
 
         private readonly ContentManager contentManager;
+        private readonly GraphicsDevice graphicsDevice;
 
-        public AssetsManager(ContentManager contentManager)
+        public AssetsManager(ContentManager contentManager, GraphicsDevice graphicsDevice)
         {
             this.contentManager = contentManager;
-            this.Texture2Ds = new Dictionary<string, Spritesheet2D>();
+            this.graphicsDevice = graphicsDevice;
+            this.Textures = new Dictionary<string, Texture2D>();
+            this.Spritesheets = new Dictionary<string, Spritesheet2D>();
             this.Fonts = new Dictionary<string, SpriteFont>();
 
             this.LoadTextures();
+            this.LoadSpritesheets();
             this.LoadFonts();
+        }
+
+        private void LoadSpritesheets()
+        {
+            this.Spritesheets.Add("Tiles", this.LoadSpritesheet("Tiles/tiles_spritesheet", 0));
+            this.Spritesheets.Add("Revenant_Move", this.LoadSpritesheet("Revenant/Move/revenant_moveSpritesheet", 8));
+            this.Spritesheets.Add("Whisp_Attack", this.LoadSpritesheet("Whisp/Attack/wisp_attacksheet", 8));
         }
 
         private void LoadTextures()
         {
-            this.Texture2Ds.Add("Tiles", this.LoadSpritesheet("Tiles/tiles_spritesheet", 0));
-            this.Texture2Ds.Add("Revenant_Move", this.LoadSpritesheet("Revenant/Move/revenant_moveSpritesheet", 8));
-            this.Texture2Ds.Add("Whisp_Attack", this.LoadSpritesheet("Whisp/Attack/wisp_attacksheet", 8));
+            var t1 = new Texture2D(graphicsDevice, 1, 1);
+            t1.SetData<Color>(new Color[] {Color.White});
+
+            this.Textures.Add("1x1Texture", t1);
         }
 
         private void LoadFonts()

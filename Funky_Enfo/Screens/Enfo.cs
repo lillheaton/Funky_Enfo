@@ -7,22 +7,23 @@ namespace FunkyEnfo.Screens
 {
     public class Enfo : BaseScreen
     {
+        public TileEngine TileEngine { get; private set; }
+        public UnitManager UnitManager { get; private set; }
+
         private KeyboardState oldState;
-        private TileEngine tileEngine;
-        private UnitManager unitManager;
 
         public Enfo(AssetsManager assets) : base(assets)
         {
-            this.tileEngine = new TileEngine(assets);
-            this.unitManager = new UnitManager(Camera, assets);
+            this.TileEngine = new TileEngine(assets);
+            this.UnitManager = new UnitManager(this);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, transformMatrix: Camera.GetViewMatrix());
 
-            tileEngine.Draw(spriteBatch, gameTime);
-            this.unitManager.Draw(spriteBatch, gameTime);
+            this.TileEngine.Draw(spriteBatch, gameTime);
+            this.UnitManager.Draw(spriteBatch, gameTime);
 
             spriteBatch.End();
         }
@@ -30,7 +31,7 @@ namespace FunkyEnfo.Screens
         public override void Update(GameTime gameTime)
         {
             HandleKeyboardInput();
-            this.unitManager.Update(gameTime);
+            this.UnitManager.Update(gameTime);
         }
 
         private void HandleKeyboardInput()

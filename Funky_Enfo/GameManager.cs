@@ -31,7 +31,7 @@ namespace FunkyEnfo
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.assetsManager = new AssetsManager(this.Content);
+            this.assetsManager = new AssetsManager(this.Content, this.GraphicsDevice);
         }
 
         protected override void UnloadContent()
