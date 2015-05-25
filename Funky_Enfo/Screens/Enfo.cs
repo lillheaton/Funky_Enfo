@@ -1,4 +1,5 @@
-﻿using FunkyEnfo.Engines;
+﻿using FunkyEnfo.Map;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -57,6 +58,12 @@ namespace FunkyEnfo.Screens
             if (newState.IsKeyDown(Keys.Up))
             {
                 Camera.Move(new Vector2(0, CameraSpeed));
+            }
+
+            if (newState.IsKeyDown(Keys.F12) && oldState.IsKeyUp(Keys.F12))
+            {
+                UnitManager.ToggleShowForces();
+                TileEngine.ToggleShowWaypoints();
             }
 
             oldState = newState;

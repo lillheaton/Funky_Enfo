@@ -12,7 +12,7 @@ namespace FunkyEnfo.Models
         {
             var size = rectangle.Width / 2;
 
-            this.Rectangle = new Rectangle(rectangle.X - size, rectangle.Y - size, rectangle.Width, rectangle.Height);
+            this.Rectangle = new Rectangle(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
             this.Center = new Vector3(this.Rectangle.X + size, this.Rectangle.Y + size, 0);
         }
     }

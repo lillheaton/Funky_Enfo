@@ -39,7 +39,12 @@
     <Compile Include="AssetsManager.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Direction.cs" />
-    <Compile Include="Engines\TileEngine.cs" />
+    <Compile Include="Extensions\RectangleExtension.cs" />
+    <Compile Include="Map\LineClipping.cs" />
+    <Compile Include="Map\MapHelper.cs" />
+    <Compile Include="Map\TileEngine.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Models\Waypoint.cs" />
     <Compile Include="Models\Wall.cs" />
     <Compile Include="Models\Spritesheet2D.cs" />
     <Compile Include="Models\Tile.cs" />
@@ -52,6 +57,7 @@
     <Compile Include="UnitManager.cs" />
     <Compile Include="Units\BaseUnit.cs" />
     <Compile Include="Units\Revenant.cs" />
+    <Compile Include="VecDirection.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Lillheaton.Monogame.Dijkstra">
