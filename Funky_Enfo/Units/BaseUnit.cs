@@ -1,12 +1,11 @@
-﻿using System;
-
-using FunkyEnfo.Models;
+﻿using FunkyEnfo.Models;
 using FunkyEnfo.Screens;
 using Lillheaton.Monogame.Steering;
 using Lillheaton.Monogame.Steering.Behaviours;
 using Lillheaton.Monogame.Steering.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 
 namespace FunkyEnfo.Units
 {
@@ -46,12 +45,24 @@ namespace FunkyEnfo.Units
             this.Direction = Direction.South;
         }
 
-        public abstract void Update(GameTime gameTime);
+        public virtual float GetMass()
+        {
+            return 20f;
+        }
+
+        public virtual float GetMaxVelocity()
+        {
+            return 3f;
+        }
+
+        public virtual void Update(GameTime gameTime)
+        {
+            this.Direction = CalculateDirection();
+            HandleAnimationUpdate(gameTime);
+        }
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            HandleAnimationUpdate(gameTime);
-
             spriteBatch.Draw(this.CurrentSpritesheet.Texture, this.Position2D, SourceRectangle, Color.White, Rotate, origin, 1, SpriteEffects.None, 0f);
             if (DrawForces)
                 Forces(spriteBatch);
@@ -63,6 +74,12 @@ namespace FunkyEnfo.Units
             this.SourceRectangle = new Rectangle(0, 0, (int)spritesheet.SpriteSize, (int)spritesheet.SpriteSize);
             this.origin = new Vector2(this.CurrentSpritesheet.SpriteSize / 2f, spritesheet.SpriteSize / 2f);
         }
+
+
+
+
+
+
 
         private void HandleAnimationUpdate(GameTime gameTime)
         {
@@ -94,14 +111,12 @@ namespace FunkyEnfo.Units
                 drawVec + steeringForce * Scale, Color.Red, 2);
         }
 
-        public virtual float GetMass()
+        private Direction CalculateDirection()
         {
-            return 20f;
-        }
+            float angle = MathHelper.ToDegrees(this.SteeringBehavior.Angle);
+            int direction = ((int)((angle + 22.5f) / 45.0f)) & 7;
 
-        public virtual float GetMaxVelocity()
-        {
-            return 3f;
+            return (Direction)direction;
         }
     }
 }

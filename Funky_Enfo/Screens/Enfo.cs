@@ -12,6 +12,7 @@ namespace FunkyEnfo.Screens
         public UnitManager UnitManager { get; private set; }
 
         private KeyboardState oldState;
+        private MouseState oldMouseState;
 
         public Enfo(AssetsManager assets) : base(assets)
         {
@@ -31,7 +32,9 @@ namespace FunkyEnfo.Screens
 
         public override void Update(GameTime gameTime)
         {
-            HandleKeyboardInput();
+            this.HandleKeyboardInput();
+            this.HandleMouseInput();
+
             this.UnitManager.Update(gameTime);
         }
 
@@ -67,6 +70,19 @@ namespace FunkyEnfo.Screens
             }
 
             oldState = newState;
+        }
+
+        private void HandleMouseInput()
+        {
+            var newMouseState = Mouse.GetState();
+
+            if (newMouseState.RightButton == ButtonState.Released && oldMouseState.RightButton == ButtonState.Pressed)
+            {
+                // New position for the player
+                this.UnitManager.Player.MoveToPosition(this.Camera.ScreenToWorld(newMouseState.Position.ToVector2()));
+            }
+
+            oldMouseState = newMouseState;
         }
     }
 }

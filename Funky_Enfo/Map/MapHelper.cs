@@ -24,6 +24,11 @@ namespace FunkyEnfo.Map
 
         public static Vector2[] CalculatePath(TileEngine engine, Vector2 start, Vector2 end)
         {
+            if (ClearViewFrom(start, end, engine.Obstacles))
+            {
+                return new[] { end };
+            }
+
             Tile startTile = engine.TileAt(start);
             Tile endTile = engine.TileAt(end);
 

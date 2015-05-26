@@ -1,19 +1,43 @@
-﻿using FunkyEnfo.Map;
+﻿using System;
+using System.Collections.Generic;
+
+using FunkyEnfo.Map;
 using FunkyEnfo.Screens;
 using Lillheaton.Monogame.Steering;
+using Lillheaton.Monogame.Steering.Events;
+
 using Microsoft.Xna.Framework;
 using System.Linq;
 
 namespace FunkyEnfo.Units
 {
-    public class Revenant : BaseUnit
+    public class Wisp : BaseUnit
     {
         private Path currentPath;
-        
-        public Revenant(Vector2 position, Enfo enfo) : base(enfo.Assets.Spritesheets["Revenant_Move"], enfo)
+        private List<IBoid> enemies; 
+
+        public Wisp(Vector2 position, Enfo screen): base(screen.Assets.Spritesheets["Whisp_Move"], screen)
         {
             this.Position2D = position;
             this.TargetPosition = position;
+            this.enemies = new List<IBoid>();
+            this.enemies.Add(screen.UnitManager.Player);
+
+            this.SteeringBehavior.Settings.MaxQueueRadius = 50;
+            this.SteeringBehavior.EnemyAhead += SteeringBehaviorOnEnemyAhead;
+        }
+
+        private void SteeringBehaviorOnEnemyAhead(object sender, EnemyEventArgs enemyEventArgs)
+        {
+        }
+
+
+
+
+
+        public override float GetMaxVelocity()
+        {
+            return 6f;
         }
 
         public override void Update(GameTime gameTime)
@@ -25,7 +49,8 @@ namespace FunkyEnfo.Units
                 this.SteeringBehavior.FollowPath(currentPath);
                 this.SteeringBehavior.CollisionAvoidance(this.Screen.TileEngine.Obstacles);
                 this.SteeringBehavior.Queue(this.Screen.UnitManager.Units);
-                this.SteeringBehavior.Update(gameTime);    
+                this.SteeringBehavior.EnemyAwareness(enemies);
+                this.SteeringBehavior.Update(gameTime);
             }
         }
 

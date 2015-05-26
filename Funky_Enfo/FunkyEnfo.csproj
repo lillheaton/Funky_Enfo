@@ -35,7 +35,6 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AnimatedSprite.cs" />
     <Compile Include="AssetsManager.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Direction.cs" />
@@ -57,6 +56,7 @@
     <Compile Include="UnitManager.cs" />
     <Compile Include="Units\BaseUnit.cs" />
     <Compile Include="Units\Revenant.cs" />
+    <Compile Include="Units\Wisp.cs" />
     <Compile Include="VecDirection.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +102,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Whisp\Attack\wisp_attacksheet.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Whisp\Move\wisp_movesheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Whisp\Move\wisp_movesheet.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icon.ico" />
