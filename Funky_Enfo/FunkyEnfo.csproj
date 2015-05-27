@@ -39,6 +39,7 @@
     <Compile Include="Camera.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions\RectangleExtension.cs" />
+    <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="Map\LineClipping.cs" />
     <Compile Include="Map\MapHelper.cs" />
     <Compile Include="Map\TileEngine.cs" />

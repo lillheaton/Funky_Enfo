@@ -1,4 +1,6 @@
-﻿using FunkyEnfo.Models;
+﻿using FunkyEnfo.Extensions;
+using FunkyEnfo.Map;
+using FunkyEnfo.Models;
 using FunkyEnfo.Screens;
 using Lillheaton.Monogame.Steering;
 using Lillheaton.Monogame.Steering.Behaviours;
@@ -21,7 +23,7 @@ namespace FunkyEnfo.Units
         public bool DrawForces { get; set; }
 
         protected Enfo Screen { get; private set; }
-        protected Spritesheet2D CurrentSpritesheet { get; private set; }
+        protected Spritesheet2D CurrentSpritesheet { get; set; }
         protected Rectangle SourceRectangle { get; set; }
         protected float Rotate { get; set; }
         protected TimeSpan SpriteUpdatePerMilliseconds { get; set; }
@@ -39,10 +41,14 @@ namespace FunkyEnfo.Units
             this.Screen = screen;
             this.Position2D = new Vector2();
             this.TargetPosition = new Vector2();
-            this.SetCurrentSpritesheet(currentSpritesheet);
             this.SpriteUpdatePerMilliseconds = TimeSpan.FromMilliseconds(100);
             this.currentSpritePosition = 0;
             this.Direction = Direction.South;
+
+            // Init spritesheet stuff
+            this.CurrentSpritesheet = currentSpritesheet;
+            this.SourceRectangle = new Rectangle(0, 0, (int)currentSpritesheet.SpriteSize, (int)currentSpritesheet.SpriteSize);
+            this.origin = new Vector2(this.CurrentSpritesheet.SpriteSize / 2f, currentSpritesheet.SpriteSize / 2f);
         }
 
         public virtual float GetMass()
@@ -68,14 +74,15 @@ namespace FunkyEnfo.Units
                 Forces(spriteBatch);
         }
 
-        public void SetCurrentSpritesheet(Spritesheet2D spritesheet)
+
+
+
+
+
+        protected bool ClearViewTo(IBoid boid)
         {
-            this.CurrentSpritesheet = spritesheet;
-            this.SourceRectangle = new Rectangle(0, 0, (int)spritesheet.SpriteSize, (int)spritesheet.SpriteSize);
-            this.origin = new Vector2(this.CurrentSpritesheet.SpriteSize / 2f, spritesheet.SpriteSize / 2f);
+            return MapHelper.ClearViewFrom(this.Position2D, boid.Position.ToVec2(), this.Screen.TileEngine.Obstacles);
         }
-
-
 
 
 

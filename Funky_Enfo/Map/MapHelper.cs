@@ -8,6 +8,8 @@ namespace FunkyEnfo.Map
 {
     public class MapHelper
     {
+        public static Vector2 GoalPosition = new Vector2(12 * 64, 49 * 64);
+
         public static bool ClearViewFrom(Vector2 pointA, Vector2 pointB, IRectangleObstacle[] obstacles)
         {
             bool clearView = true;

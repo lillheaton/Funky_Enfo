@@ -1,4 +1,5 @@
-﻿using FunkyEnfo.Screens;
+﻿using FunkyEnfo.Map;
+using FunkyEnfo.Screens;
 using FunkyEnfo.Units;
 using Lillheaton.Monogame.Steering;
 using Microsoft.Xna.Framework;
@@ -20,11 +21,13 @@ namespace FunkyEnfo
         private TimeSpan lastUpdateTime;
         private int currentWaveUnit;
         private bool drawForces;
+        private Random random;
 
         public UnitManager(Enfo screen)
         {
             this.screen = screen;
             this.Units = new List<IBoid>();
+            this.random = new Random();
             this.waveUpdatePerMilliseconds = TimeSpan.FromMilliseconds(10000);
 
             this.LoadUnits();
@@ -33,6 +36,7 @@ namespace FunkyEnfo
         private void LoadUnits()
         {
             this.Player = new Revenant(new Vector2(120, 120), this.screen);
+            this.Units.Add(Player);
         }
 
         private void HandleWaves(GameTime gameTime)
@@ -41,8 +45,10 @@ namespace FunkyEnfo
             if (lastUpdateTime > this.waveUpdatePerMilliseconds)
             {
                 lastUpdateTime -= this.waveUpdatePerMilliseconds;
-                var revenant = new Wisp(new Vector2(6 * 64, 2 * 64), screen);
-                revenant.MoveToPosition(new Vector2(12 * 64, 49 * 64));
+                var revenant = new Wisp(new Vector2(6 * random.Next(58, 64), 2 * 64), screen);
+
+                // End position
+                revenant.MoveToPosition(MapHelper.GoalPosition);
                 this.Units.Add(revenant);
 
                 currentWaveUnit++;
@@ -58,14 +64,15 @@ namespace FunkyEnfo
             }
         }
 
+
+
+
         public void Update(GameTime gameTime)
         {
-            this.Player.Update(gameTime);
-
-            foreach (var unit in Units.OfType<BaseUnit>())
+            for (int i = 0; i < Units.Count; i++)
             {
-                unit.DrawForces = drawForces;
-                unit.Update(gameTime);
+                (Units[i] as BaseUnit).Update(gameTime);
+                (Units[i] as BaseUnit).DrawForces = drawForces;
             }
 
             this.HandleWaves(gameTime);
@@ -73,11 +80,12 @@ namespace FunkyEnfo
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            Player.Draw(spriteBatch, gameTime);
+            // Todo: think of a better way to do this, for performance
+            Units = Units.OrderBy(s => s.Position.X).ToList();
 
-            foreach (var unit in Units.OfType<BaseUnit>())
+            for (int i = 0; i < Units.Count; i++)
             {
-                unit.Draw(spriteBatch, gameTime);
+                (Units[i] as BaseUnit).Draw(spriteBatch, gameTime);
             }
         }
 
