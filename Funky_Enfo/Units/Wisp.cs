@@ -43,7 +43,7 @@ namespace FunkyEnfo.Units
                 this.SteeringBehavior.FollowPath(currentPath);
             }
             this.SteeringBehavior.CollisionAvoidance(this.Screen.TileEngine.Obstacles);
-            this.SteeringBehavior.Queue(this.Screen.UnitManager.Units);
+            this.SteeringBehavior.Queue(this.Screen.UnitManager.Units.ToArray());
             this.SteeringBehavior.Update(gameTime);
         }
 

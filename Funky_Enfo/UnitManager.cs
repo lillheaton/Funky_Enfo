@@ -1,7 +1,6 @@
 ﻿using FunkyEnfo.Map;
 using FunkyEnfo.Screens;
 using FunkyEnfo.Units;
-using Lillheaton.Monogame.Steering;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -13,7 +12,7 @@ namespace FunkyEnfo
     public class UnitManager
     {
         public Revenant Player { get; set; }
-        public List<IBoid> Units { get; set; }
+        public List<BaseUnit> Units { get; set; }
 
         private const int WaveLenght = 5;
         private Enfo screen;
@@ -26,7 +25,7 @@ namespace FunkyEnfo
         public UnitManager(Enfo screen)
         {
             this.screen = screen;
-            this.Units = new List<IBoid>();
+            this.Units = new List<BaseUnit>();
             this.random = new Random();
             this.waveUpdatePerMilliseconds = TimeSpan.FromMilliseconds(10000);
 
@@ -71,8 +70,8 @@ namespace FunkyEnfo
         {
             for (int i = 0; i < Units.Count; i++)
             {
-                (Units[i] as BaseUnit).Update(gameTime);
-                (Units[i] as BaseUnit).DrawForces = drawForces;
+                Units[i].Update(gameTime);
+                Units[i].DrawForces = drawForces;
             }
 
             this.HandleWaves(gameTime);
@@ -85,13 +84,27 @@ namespace FunkyEnfo
 
             for (int i = 0; i < Units.Count; i++)
             {
-                (Units[i] as BaseUnit).Draw(spriteBatch, gameTime);
+                Units[i].Draw(spriteBatch, gameTime);
             }
         }
 
         public void ToggleShowForces()
         {
             this.drawForces = !this.drawForces;
+        }
+
+        public BaseUnit UnitAt(Vector2 position)
+        {
+            for (int i = 0; i < Units.Count; i++)
+            {
+                // Get the first unit that are in position
+                if (Vector2.Distance(Units[i].Position2D, position) < Units[i].UnitRadius)
+                {
+                    return Units[i];
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace FunkyEnfo.Units
         public Vector2 TargetPosition { get; set; }
         public Vector3 Velocity { get; set; }
         public bool DrawForces { get; set; }
+        public float UnitRadius { get { return this.CurrentSpritesheet.SpriteSize / 2; } }
 
         protected Enfo Screen { get; private set; }
         protected Spritesheet2D CurrentSpritesheet { get; set; }
