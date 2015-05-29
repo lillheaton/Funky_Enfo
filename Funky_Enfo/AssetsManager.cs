@@ -33,6 +33,7 @@ namespace FunkyEnfo
         {
             this.Spritesheets.Add("Tiles", this.LoadSpritesheet("Tiles/tiles_spritesheet", 0));
             this.Spritesheets.Add("Revenant_Move", this.LoadSpritesheet("Revenant/Move/revenant_moveSpritesheet", 8));
+            this.Spritesheets.Add("Revenant_Attack", this.LoadSpritesheet("Revenant/Attack/revenant_attacksheet", 8));
             this.Spritesheets.Add("Whisp_Attack", this.LoadSpritesheet("Whisp/Attack/wisp_attacksheet", 8));
             this.Spritesheets.Add("Whisp_Move", this.LoadSpritesheet("Whisp/Move/wisp_movesheet", 8));
         }
@@ -43,6 +44,7 @@ namespace FunkyEnfo
             t1.SetData<Color>(new Color[] {Color.White});
 
             this.Textures.Add("1x1Texture", t1);
+            this.Textures.Add("Revenant_Projectile", contentManager.Load<Texture2D>("Revenant/Projectile"));
         }
 
         private void LoadFonts()

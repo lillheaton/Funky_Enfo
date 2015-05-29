@@ -13,11 +13,11 @@ namespace FunkyEnfo.Units
 {
     public abstract class BaseUnit : IBoid
     {
-        public Direction Direction { get; protected set; }
-        
+        public Vector2 Position2D;
+
+        public Direction Direction { get; protected set; }   
         public SteeringBehavior SteeringBehavior { get; private set; }
         public Vector3 Position { get { return new Vector3(this.Position2D, 0); } set { this.Position2D = new Vector2(value.X, value.Y); } }
-        public Vector2 Position2D { get; set; }
         public Vector2 TargetPosition { get; set; }
         public Vector3 Velocity { get; set; }
         public bool DrawForces { get; set; }
@@ -28,10 +28,10 @@ namespace FunkyEnfo.Units
         protected Rectangle SourceRectangle { get; set; }
         protected float Rotate { get; set; }
         protected TimeSpan SpriteUpdatePerMilliseconds { get; set; }
+        protected int CurrentSpritePosition { get; private set; }
         
         private Vector2 origin;
         private TimeSpan lastUpdateTime;
-        private int currentSpritePosition;
 
         protected BaseUnit(Spritesheet2D currentSpritesheet, Enfo screen)
         {
@@ -43,7 +43,7 @@ namespace FunkyEnfo.Units
             this.Position2D = new Vector2();
             this.TargetPosition = new Vector2();
             this.SpriteUpdatePerMilliseconds = TimeSpan.FromMilliseconds(100);
-            this.currentSpritePosition = 0;
+            this.CurrentSpritePosition = 0;
             this.Direction = Direction.South;
 
             // Init spritesheet stuff
@@ -95,8 +95,8 @@ namespace FunkyEnfo.Units
             if (lastUpdateTime > SpriteUpdatePerMilliseconds)
             {
                 lastUpdateTime -= SpriteUpdatePerMilliseconds;
-                this.currentSpritePosition++;
-                var spritePosition = CurrentSpritesheet.SpritePosition[Direction.ToString() + currentSpritePosition % this.CurrentSpritesheet.PerAnimation];
+                this.CurrentSpritePosition++;
+                var spritePosition = CurrentSpritesheet.SpritePosition[Direction.ToString() + this.CurrentSpritePosition % this.CurrentSpritesheet.PerAnimation];
                 this.SourceRectangle = new Rectangle(spritePosition.ToPoint(), new Point(this.SourceRectangle.Width, this.SourceRectangle.Height));
             }
         }
