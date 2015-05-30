@@ -97,6 +97,9 @@ namespace FunkyEnfo
         {
             for (int i = 0; i < Units.Count; i++)
             {
+                if (Units[i] == Player)
+                    continue;
+
                 // Get the first unit that are in position
                 if (Vector2.Distance(Units[i].Position2D, position) < Units[i].UnitRadius)
                 {

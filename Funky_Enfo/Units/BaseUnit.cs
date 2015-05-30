@@ -13,11 +13,10 @@ namespace FunkyEnfo.Units
 {
     public abstract class BaseUnit : IBoid
     {
-        public Vector2 Position2D;
-
         public Direction Direction { get; protected set; }   
         public SteeringBehavior SteeringBehavior { get; private set; }
         public Vector3 Position { get { return new Vector3(this.Position2D, 0); } set { this.Position2D = new Vector2(value.X, value.Y); } }
+        public Vector2 Position2D { get; set; }
         public Vector2 TargetPosition { get; set; }
         public Vector3 Velocity { get; set; }
         public bool DrawForces { get; set; }

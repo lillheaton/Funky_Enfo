@@ -25,7 +25,7 @@ namespace FunkyEnfo.Units
 
         public override float GetMaxVelocity()
         {
-            return 2f;
+            return 0.8f;
         }
 
         public override void Update(GameTime gameTime)
