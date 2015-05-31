@@ -14,7 +14,10 @@ namespace FunkyEnfo.Screens
         private KeyboardState oldState;
         private MouseState oldMouseState;
 
-        public Enfo(AssetsManager assets) : base(assets)
+        private bool freeMouse;
+        private const int CameraSpeed = 10;
+
+        public Enfo(AssetsManager assets, int width, int height) : base(assets, width, height)
         {
             this.TileEngine = new TileEngine(assets);
             this.UnitManager = new UnitManager(this);
@@ -41,30 +44,30 @@ namespace FunkyEnfo.Screens
         private void HandleKeyboardInput()
         {
             KeyboardState newState = Keyboard.GetState();
-            const int CameraSpeed = 10;
 
             if (newState.IsKeyDown(Keys.Left))
             {
-                Camera.Move(new Vector2(CameraSpeed, 0));
+                Camera.Move(VecDirection.West * CameraSpeed);
             }
 
             if (newState.IsKeyDown(Keys.Right))
             {
-                Camera.Move(new Vector2(-CameraSpeed, 0));
+                Camera.Move(VecDirection.East * CameraSpeed);
             }
 
             if (newState.IsKeyDown(Keys.Down))
             {
-                Camera.Move(new Vector2(0, -CameraSpeed));
+                Camera.Move(VecDirection.South * CameraSpeed);
             }
 
             if (newState.IsKeyDown(Keys.Up))
             {
-                Camera.Move(new Vector2(0, CameraSpeed));
+                Camera.Move(VecDirection.North * CameraSpeed);
             }
 
             if (newState.IsKeyDown(Keys.F12) && oldState.IsKeyUp(Keys.F12))
             {
+                this.freeMouse = !this.freeMouse;
                 UnitManager.ToggleShowForces();
                 TileEngine.ToggleShowWaypoints();
             }
@@ -80,6 +83,33 @@ namespace FunkyEnfo.Screens
             {
                 // New position for the player
                 this.UnitManager.Player.MoveToPosition(this.Camera.ScreenToWorld(newMouseState.Position.ToVector2()));
+            }
+
+            if (!freeMouse)
+            {
+                var x = newMouseState.X < 0 ? 0 : (newMouseState.X > this.Width ? this.Width : newMouseState.X);
+                var y = newMouseState.Y < 0 ? 0 : (newMouseState.Y > this.Height ? this.Height : newMouseState.Y);
+                Mouse.SetPosition(x, y);
+
+                if (y < 10)
+                {
+                    Camera.Move(VecDirection.North * CameraSpeed);
+                }
+
+                if (y > Height - 10)
+                {
+                    Camera.Move(VecDirection.South * CameraSpeed);
+                }
+
+                if (x < 10)
+                {
+                    Camera.Move(VecDirection.West * CameraSpeed);
+                }
+
+                if (x > Width - 10)
+                {
+                    Camera.Move(VecDirection.East * CameraSpeed);
+                }
             }
 
             oldMouseState = newMouseState;

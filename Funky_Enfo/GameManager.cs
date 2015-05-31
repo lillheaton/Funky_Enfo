@@ -24,7 +24,7 @@ namespace FunkyEnfo
         {
             base.Initialize();
             this.IsMouseVisible = true;
-            this.currentScreen = new Enfo(assetsManager);
+            this.currentScreen = new Enfo(assetsManager, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
         }
 
         // This method is called before Initialize

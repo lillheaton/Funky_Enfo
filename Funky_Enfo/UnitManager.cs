@@ -20,13 +20,11 @@ namespace FunkyEnfo
         private TimeSpan lastUpdateTime;
         private int currentWaveUnit;
         private bool drawForces;
-        private Random random;
 
         public UnitManager(Enfo screen)
         {
             this.screen = screen;
             this.Units = new List<BaseUnit>();
-            this.random = new Random();
             this.waveUpdatePerMilliseconds = TimeSpan.FromMilliseconds(10000);
 
             this.LoadUnits();
@@ -44,11 +42,14 @@ namespace FunkyEnfo
             if (lastUpdateTime > this.waveUpdatePerMilliseconds)
             {
                 lastUpdateTime -= this.waveUpdatePerMilliseconds;
-                var revenant = new Wisp(new Vector2(6 * random.Next(58, 64), 2 * 64), screen);
+                var westWisp = new Wisp(new Vector2(5 * screen.TileEngine.TileSize, 2 * screen.TileEngine.TileSize), screen);
+                var eastWisp = new Wisp(new Vector2(20 * screen.TileEngine.TileSize, 2 * screen.TileEngine.TileSize), screen);
 
                 // End position
-                revenant.MoveToPosition(MapHelper.GoalPosition);
-                this.Units.Add(revenant);
+                westWisp.MoveToPosition(MapHelper.GoalPosition);
+                eastWisp.MoveToPosition(MapHelper.GoalPosition);
+                this.Units.Add(westWisp);
+                this.Units.Add(eastWisp);
 
                 currentWaveUnit++;
                 if (currentWaveUnit == WaveLenght)
@@ -58,7 +59,7 @@ namespace FunkyEnfo
                 }
                 else
                 {
-                    this.waveUpdatePerMilliseconds = TimeSpan.FromMilliseconds(1000);
+                    this.waveUpdatePerMilliseconds = TimeSpan.FromMilliseconds(2000);
                 }
             }
         }

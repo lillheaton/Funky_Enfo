@@ -21,7 +21,8 @@ namespace FunkyEnfo
 
         public void Move(Vector2 direction)
         {
-            Position += direction;
+            // Revert the direction so it feels like 0,0 is still in the top left corner
+            Position += -direction;
         }
 
         public Matrix GetViewMatrix()

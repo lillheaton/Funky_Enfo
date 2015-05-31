@@ -7,11 +7,15 @@ namespace FunkyEnfo.Screens
     {
         public Camera Camera { get; private set; }
         public AssetsManager Assets { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
 
-        protected BaseScreen(AssetsManager assets)
+        protected BaseScreen(AssetsManager assets, int width, int height)
         {
             this.Camera = new Camera();
             this.Assets = assets;
+            this.Width = width;
+            this.Height = height;
         }
 
         public abstract void Draw(SpriteBatch spriteBatch, GameTime gameTime);

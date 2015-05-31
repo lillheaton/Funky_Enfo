@@ -49,8 +49,6 @@ namespace FunkyEnfo.Units
 
         public void MoveToPosition(Vector2 pos)
         {
-            this.SteeringBehavior.ResetPath();
-
             Task.Factory.StartNew(
                 () =>
                     {

@@ -15,6 +15,7 @@ namespace FunkyEnfo.Map
         public List<Waypoint> Waypoints { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
+        public int TileSize { get; private set; }
 
         private Spritesheet2D spritesheet;
         private AssetsManager assets;
@@ -34,6 +35,7 @@ namespace FunkyEnfo.Map
             this.Width = lines[0].Length / 2;
             this.Height = lines.Length;
             this.Tiles = new Tile[this.Width][];
+            this.TileSize = (int)this.spritesheet.SpriteSize;
             var obstacles = new List<Wall>();
 
             // Init array

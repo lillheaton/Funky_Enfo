@@ -65,7 +65,7 @@ namespace FunkyEnfo.Units
                     }
                     else
                     {
-                        currentPath.AddNode(this.Position + Vector3.Normalize(new Vector3(pos, 0)));
+                        FacePosition(pos);
                     }
                 });
         }
@@ -74,7 +74,8 @@ namespace FunkyEnfo.Units
         {
             if (currentPath != null)
             {
-                this.SteeringBehavior.FollowPath(currentPath, this.Screen.UnitManager.Units.ToArray());
+                //this.SteeringBehavior.FollowPath(currentPath, this.Screen.UnitManager.Units.ToArray());
+                this.SteeringBehavior.FollowPath(currentPath);
                 this.SteeringBehavior.CollisionAvoidance(this.Screen.TileEngine.Obstacles);
                 this.SteeringBehavior.Update(gameTime);
             }
@@ -133,6 +134,7 @@ namespace FunkyEnfo.Units
                 {
                     this.hasFireProjectile = true;
                     this.projectiles.Add(new RevenantProjectile(this.Position2D, this.currentEnemy, Screen.Assets.Textures["Revenant_Projectile"]));
+                    FacePosition(this.currentEnemy.Position2D);
                 }
                 else if (this.CurrentSpritePosition%this.CurrentSpritesheet.PerAnimation != 0)
                 {
@@ -143,6 +145,11 @@ namespace FunkyEnfo.Units
             {
                 this.CurrentSpritesheet = Screen.Assets.Spritesheets["Revenant_Move"];
             }
+        }
+
+        private void FacePosition(Vector2 position)
+        {
+            this.Velocity += Vector3.Normalize(new Vector3(position, 0));
         }
     }
 }
