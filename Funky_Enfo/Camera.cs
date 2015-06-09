@@ -1,11 +1,11 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace FunkyEnfo
 {
     public class Camera
     {
-        public float Zoom { get; set; }
+        private float zoom;
+        public float Zoom { get { return zoom; } set { zoom = MathHelper.Clamp(value, 0.5f, 1.2f); } }
         public Vector2 Position { get; set; }
         public float Rotation { get; set; }
         public Vector2 Origin { get; set; }

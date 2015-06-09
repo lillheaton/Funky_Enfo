@@ -1,4 +1,6 @@
-﻿using FunkyEnfo.Map;
+﻿using System;
+
+using FunkyEnfo.Map;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,10 +8,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace FunkyEnfo.Screens
 {
-    public class Enfo : BaseScreen
+    public class GameScreen : BaseScreen
     {
         public TileEngine TileEngine { get; private set; }
         public UnitManager UnitManager { get; private set; }
+        public AssetsManager Assets { get { return Game.AssetsManager; } }
 
         private KeyboardState oldState;
         private MouseState oldMouseState;
@@ -17,9 +20,9 @@ namespace FunkyEnfo.Screens
         private bool freeMouse;
         private const int CameraSpeed = 10;
 
-        public Enfo(AssetsManager assets, int width, int height) : base(assets, width, height)
+        public GameScreen(GameManager game) : base(game)
         {
-            this.TileEngine = new TileEngine(assets);
+            this.TileEngine = new TileEngine(game.AssetsManager);
             this.UnitManager = new UnitManager(this);
         }
 
@@ -112,6 +115,16 @@ namespace FunkyEnfo.Screens
                 }
             }
 
+            if (newMouseState.ScrollWheelValue > oldMouseState.ScrollWheelValue)
+            {
+                Camera.Zoom += 0.1f;
+            }
+
+            if (newMouseState.ScrollWheelValue < oldMouseState.ScrollWheelValue)
+            {
+                Camera.Zoom -= 0.1f;
+            }
+            
             oldMouseState = newMouseState;
         }
     }

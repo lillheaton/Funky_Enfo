@@ -15,13 +15,13 @@ namespace FunkyEnfo
         public List<BaseUnit> Units { get; set; }
 
         private const int WaveLenght = 5;
-        private Enfo screen;
+        private GameScreen screen;
         private TimeSpan waveUpdatePerMilliseconds;
         private TimeSpan lastUpdateTime;
         private int currentWaveUnit;
         private bool drawForces;
 
-        public UnitManager(Enfo screen)
+        public UnitManager(GameScreen screen)
         {
             this.screen = screen;
             this.Units = new List<BaseUnit>();
@@ -48,8 +48,9 @@ namespace FunkyEnfo
                 // End position
                 westWisp.MoveToPosition(MapHelper.GoalPosition);
                 eastWisp.MoveToPosition(MapHelper.GoalPosition);
-                this.Units.Add(westWisp);
+
                 this.Units.Add(eastWisp);
+                this.Units.Add(westWisp);
 
                 currentWaveUnit++;
                 if (currentWaveUnit == WaveLenght)

@@ -5,17 +5,17 @@ namespace FunkyEnfo.Screens
 {
     public abstract class BaseScreen
     {
+        public GameManager Game { get; private set; }
         public Camera Camera { get; private set; }
-        public AssetsManager Assets { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
 
-        protected BaseScreen(AssetsManager assets, int width, int height)
+        protected BaseScreen(GameManager game)
         {
+            this.Game = game;
             this.Camera = new Camera();
-            this.Assets = assets;
-            this.Width = width;
-            this.Height = height;
+            this.Width = game.Graphics.PreferredBackBufferWidth;
+            this.Height = game.Graphics.PreferredBackBufferHeight;            
         }
 
         public abstract void Draw(SpriteBatch spriteBatch, GameTime gameTime);

@@ -1,4 +1,6 @@
-﻿using FunkyEnfo.Screens;
+﻿using System;
+
+using FunkyEnfo.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -7,16 +9,16 @@ namespace FunkyEnfo
 {
     public class GameManager : Game
     {
-        private GraphicsDeviceManager graphics;
+        public BaseScreen CurrentScreen { get; set; }
+        public GraphicsDeviceManager Graphics { get; private set; }
+        public AssetsManager AssetsManager { get; private set; }
         private SpriteBatch spriteBatch;
-        private AssetsManager assetsManager;
-        private BaseScreen currentScreen;
-
+        
         public GameManager() : base()
         {
-            this.graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1200;
-            graphics.PreferredBackBufferHeight = 900;
+            this.Graphics = new GraphicsDeviceManager(this);
+            this.Graphics.PreferredBackBufferWidth = 1200;
+            this.Graphics.PreferredBackBufferHeight = 900;
             this.Content.RootDirectory = "Content";
         }
 
@@ -24,14 +26,19 @@ namespace FunkyEnfo
         {
             base.Initialize();
             this.IsMouseVisible = true;
-            this.currentScreen = new Enfo(assetsManager, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
+            this.CurrentScreen = new GameScreen(this);
         }
 
         // This method is called before Initialize
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            this.assetsManager = new AssetsManager(this.Content, this.GraphicsDevice);
+            this.AssetsManager = new AssetsManager(this.Content, this.GraphicsDevice);
+
+            //Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            //Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            //Graphics.IsFullScreen = true;
+            //Graphics.ApplyChanges();
         }
 
         protected override void UnloadContent()
@@ -44,14 +51,14 @@ namespace FunkyEnfo
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
-            this.currentScreen.Update(gameTime);
+            this.CurrentScreen.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             this.GraphicsDevice.Clear(Color.CornflowerBlue);            
-            this.currentScreen.Draw(spriteBatch, gameTime);
+            this.CurrentScreen.Draw(spriteBatch, gameTime);
             base.Draw(gameTime);
         }
     }

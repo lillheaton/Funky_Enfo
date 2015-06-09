@@ -49,7 +49,7 @@
     <Compile Include="Models\Spritesheet2D.cs" />
     <Compile Include="Models\Tile.cs" />
     <Compile Include="PrimitivesHelper.cs" />
-    <Compile Include="Screens\Enfo.cs" />
+    <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="Screens\BaseScreen.cs" />
     <Compile Include="Program.cs" />

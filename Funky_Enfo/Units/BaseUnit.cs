@@ -22,7 +22,7 @@ namespace FunkyEnfo.Units
         public bool DrawForces { get; set; }
         public float UnitRadius { get { return this.CurrentSpritesheet.SpriteSize / 2; } }
 
-        protected Enfo Screen { get; private set; }
+        protected GameScreen Screen { get; private set; }
         protected Spritesheet2D CurrentSpritesheet { get; set; }
         protected Rectangle SourceRectangle { get; set; }
         protected float Rotate { get; set; }
@@ -32,7 +32,7 @@ namespace FunkyEnfo.Units
         private Vector2 origin;
         private TimeSpan lastUpdateTime;
 
-        protected BaseUnit(Spritesheet2D currentSpritesheet, Enfo screen)
+        protected BaseUnit(Spritesheet2D currentSpritesheet, GameScreen screen)
         {
             Velocity = new Vector3(-1, -2, 0);
             Velocity = Velocity.Truncate(this.GetMaxVelocity());
@@ -84,7 +84,10 @@ namespace FunkyEnfo.Units
             return MapHelper.ClearViewFrom(this.Position2D, boid.Position.ToVec2(), this.Screen.TileEngine.Obstacles);
         }
 
-
+        protected bool InRange(Vector2 vec, float range)
+        {
+            return Vector2.Distance(this.Position2D, vec) < range;
+        }
 
 
 

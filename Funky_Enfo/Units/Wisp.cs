@@ -1,5 +1,4 @@
-﻿using FunkyEnfo.Extensions;
-using FunkyEnfo.Map;
+﻿using FunkyEnfo.Map;
 using FunkyEnfo.Screens;
 using Lillheaton.Monogame.Steering;
 using Microsoft.Xna.Framework;
@@ -15,7 +14,8 @@ namespace FunkyEnfo.Units
         private IBoid currentEnemy;
         private Path currentPath;
 
-        public Wisp(Vector2 position, Enfo screen): base(screen.Assets.Spritesheets["Whisp_Move"], screen)
+        public Wisp(Vector2 position, GameScreen screen)
+            : base(screen.Assets.Spritesheets["Whisp_Move"], screen)
         {
             this.Position2D = position;
             this.TargetPosition = position;
@@ -32,8 +32,8 @@ namespace FunkyEnfo.Units
         {
             base.Update(gameTime);
 
-            this.EnemyAwareness(Screen.UnitManager.Player);
-            
+            this.EnemyAwareness();
+
             if (this.currentEnemy != null)
             {
                 this.SteeringBehavior.Arrive(this.currentEnemy.Position);
@@ -51,44 +51,51 @@ namespace FunkyEnfo.Units
         {
             Task.Factory.StartNew(
                 () =>
-                    {
-                        currentPath =
-                            new Path(
-                                MapHelper.CalculatePath(this.Screen.TileEngine, this.Position2D, pos)
-                                    .Select(s => new Vector3(s, 0))
-                                    .ToList());
-                    });
+                {
+                    currentPath =
+                        new Path(
+                            MapHelper.CalculatePath(this.Screen.TileEngine, this.Position2D, pos)
+                                .Select(s => new Vector3(s, 0))
+                                .ToList());
+
+                    this.SteeringBehavior.ResetPath();
+                });
         }
 
 
 
-        private void EnemyAwareness(BaseUnit enemy)
+        private void EnemyAwareness()
         {
-            // If enemy is in distance to pursuit
-            if (Vector2.Distance(this.Position2D, enemy.Position2D) < EnemyAwarenessDistance)
-            {
-                this.currentEnemy = enemy;
-            }
-            else
-            {
-                // If enemy is not null, which means it was in range but is no longer 
-                if (currentEnemy != null)
+            Task.Factory.StartNew(
+                () =>
                 {
-                    // Recalculate path to goal
-                    this.MoveToPosition(MapHelper.GoalPosition);
-                }
-                this.currentEnemy = null;
-            }
+                    var enemy = Screen.UnitManager.Player;
 
-            // If enemy is in attacking distance, change spritesheet to attack!
-            if (this.currentEnemy != null && Vector2.Distance(this.Position2D, this.currentEnemy.Position.ToVec2()) < AttackDistance)
-            {
-                this.CurrentSpritesheet = Screen.Assets.Spritesheets["Whisp_Attack"];
-            }
-            else
-            {
-                this.CurrentSpritesheet = Screen.Assets.Spritesheets["Whisp_Move"];
-            }
+                    // See if the enemy is in range and if I can see it, then set it to current enemy
+                    if (this.InRange(enemy.Position2D, EnemyAwarenessDistance) && this.ClearViewTo(enemy))
+                    {
+                        currentEnemy = enemy;
+
+                        if (this.InRange(enemy.Position2D, AttackDistance))
+                        {
+                            this.CurrentSpritesheet = Screen.Assets.Spritesheets["Whisp_Attack"];
+                        }
+                        else
+                        {
+                            this.CurrentSpritesheet = Screen.Assets.Spritesheets["Whisp_Move"];
+                        }
+                    }
+                    else // Enemy is not in range
+                    {
+                        // If enemy is not null, which means it was in range but is no longer
+                        if (currentEnemy != null)
+                        {
+                            // Recalculate path to goal
+                            this.MoveToPosition(MapHelper.GoalPosition);
+                        }
+                        this.currentEnemy = null;
+                    }
+                });
         }
     }
 }
