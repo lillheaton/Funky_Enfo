@@ -13,6 +13,7 @@ namespace FunkyEnfo
     {
         public Revenant Player { get; set; }
         public List<BaseUnit> Units { get; set; }
+        public int UnitReachedGoal { get; private set; }
 
         private const int WaveLenght = 5;
         private GameScreen screen;
@@ -72,6 +73,21 @@ namespace FunkyEnfo
         {
             for (int i = 0; i < Units.Count; i++)
             {
+                // Check if unit reached the goal
+                if (Vector2.Distance(Units[i].Position2D, MapHelper.GoalPosition) < Units[i].UnitRadius)
+                {
+                    UnitReachedGoal++;
+                    Units.RemoveAt(i);
+                    continue;
+                }
+
+                // If unit is dead remove from list
+                if (Units[i].IsDead)
+                {
+                    Units.RemoveAt(i);
+                    continue;
+                }
+
                 Units[i].Update(gameTime);
                 Units[i].DrawForces = drawForces;
             }

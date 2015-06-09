@@ -22,6 +22,10 @@ namespace FunkyEnfo.Units
         public bool DrawForces { get; set; }
         public float UnitRadius { get { return this.CurrentSpritesheet.SpriteSize / 2; } }
 
+        public abstract int MaxHealth { get; set; }
+        public abstract int CurrentHealth { get; set; }
+        public bool IsDead { get { return CurrentHealth <= 0; } }
+
         protected GameScreen Screen { get; private set; }
         protected Spritesheet2D CurrentSpritesheet { get; set; }
         protected Rectangle SourceRectangle { get; set; }
@@ -30,6 +34,8 @@ namespace FunkyEnfo.Units
         protected int CurrentSpritePosition { get; private set; }
         
         private Vector2 origin;
+        private Vector2 circlePosition;
+        private Vector2 healtBarPosition;
         private TimeSpan lastUpdateTime;
 
         protected BaseUnit(Spritesheet2D currentSpritesheet, GameScreen screen)
@@ -49,6 +55,8 @@ namespace FunkyEnfo.Units
             this.CurrentSpritesheet = currentSpritesheet;
             this.SourceRectangle = new Rectangle(0, 0, (int)currentSpritesheet.SpriteSize, (int)currentSpritesheet.SpriteSize);
             this.origin = new Vector2(this.CurrentSpritesheet.SpriteSize / 2f, currentSpritesheet.SpriteSize / 2f);
+            this.circlePosition = new Vector2(-(CurrentSpritesheet.SpriteSize / 5), (CurrentSpritesheet.SpriteSize / 4));
+            this.healtBarPosition = new Vector2(-25, -(CurrentSpritesheet.SpriteSize / 1.8f));
         }
 
         public virtual float GetMass()
@@ -69,7 +77,10 @@ namespace FunkyEnfo.Units
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
+            spriteBatch.Draw(this.Screen.Assets.Textures["Circle_Green_18"], this.Position2D + this.circlePosition, Color.Green);
             spriteBatch.Draw(this.CurrentSpritesheet.Texture, this.Position2D, SourceRectangle, Color.White, Rotate, origin, 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(this.Screen.Assets.Textures["1x1Texture"], this.Position2D + this.healtBarPosition, null, null, null, 0f, GetHealthBarScaleVectr(), Color.GreenYellow);
+
             if (DrawForces)
                 Forces(spriteBatch);
         }
@@ -90,6 +101,13 @@ namespace FunkyEnfo.Units
         }
 
 
+        private Vector2 GetHealthBarScaleVectr()
+        {
+            const int HealtBarSize = 50;
+
+            var percentage = this.CurrentHealth / (float)this.MaxHealth;
+            return new Vector2(HealtBarSize * percentage, 10);
+        }
 
         private void HandleAnimationUpdate(GameTime gameTime)
         {

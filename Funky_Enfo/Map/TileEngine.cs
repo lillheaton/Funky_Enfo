@@ -49,16 +49,16 @@ namespace FunkyEnfo.Map
                 var chunks = Enumerable.Range(0, lines[i].Length / 2).Select(s => lines[i].Substring(s * 2, 2)).ToArray();
                 for (int j = 0; j < chunks.Length; j++)
                 {
-                    var size = (int)this.spritesheet.SpriteSize;
+                    var size = (int)this.spritesheet.SpriteSize - 2; // negative 2 = graphic tweek
                     var x = j * size;
                     var y = i * size;
                     var positionRectangle = new Rectangle(x, y, size, size);
 
                     bool obstacle;
                     var spritePositionName = MapHelper.TranslateMapChar(chunks[j][0], out obstacle);
-                    var spritePositionX = (int)this.spritesheet.SpritePosition[spritePositionName].X;
-                    var spritePositionY = (int)this.spritesheet.SpritePosition[spritePositionName].Y;
-                    var spritesheetRectangle = new Rectangle(spritePositionX, spritePositionY, size, size);
+                    var spritePositionX = (int)this.spritesheet.SpritePosition[spritePositionName].X + 1; // add 1 = graphic tweek
+                    var spritePositionY = (int)this.spritesheet.SpritePosition[spritePositionName].Y + 1; // add 1 = graphic tweek
+                    var spritesheetRectangle = new Rectangle(spritePositionX, spritePositionY, size , size);
 
                     this.Tiles[j][i] = new Tile(positionRectangle, spritesheetRectangle, this.spritesheet.Texture, (float)Math.PI * int.Parse(chunks[j][1].ToString()) / 2);
 

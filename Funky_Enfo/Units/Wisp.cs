@@ -9,6 +9,9 @@ namespace FunkyEnfo.Units
 {
     public class Wisp : BaseUnit
     {
+        public override sealed int CurrentHealth { get; set; }
+        public override sealed int MaxHealth { get; set; }
+
         private const int EnemyAwarenessDistance = 300;
         private const int AttackDistance = 80;
         private IBoid currentEnemy;
@@ -17,6 +20,9 @@ namespace FunkyEnfo.Units
         public Wisp(Vector2 position, GameScreen screen)
             : base(screen.Assets.Spritesheets["Whisp_Move"], screen)
         {
+            this.MaxHealth = 30;
+            this.CurrentHealth = 30;
+
             this.Position2D = position;
             this.TargetPosition = position;
 

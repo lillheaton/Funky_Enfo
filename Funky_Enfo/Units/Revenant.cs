@@ -1,5 +1,4 @@
-﻿using FunkyEnfo.Extensions;
-using FunkyEnfo.Map;
+﻿using FunkyEnfo.Map;
 using FunkyEnfo.Screens;
 using FunkyEnfo.Units.Attacks;
 using Lillheaton.Monogame.Steering;
@@ -9,10 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace FunkyEnfo.Units
 {
     public class Revenant : BaseUnit
     {
+        public override sealed int CurrentHealth { get; set; }
+        public override sealed int MaxHealth { get; set; }
+
         private const int AttackDistance = 500;
 
         private BaseUnit currentEnemy;
@@ -24,6 +27,9 @@ namespace FunkyEnfo.Units
 
         public Revenant(Vector2 position, GameScreen screen) : base(screen.Assets.Spritesheets["Revenant_Move"], screen)
         {
+            this.CurrentHealth = 300;
+            this.MaxHealth = 300;
+
             this.projectiles = new List<RevenantProjectile>();
             this.Position2D = position;
             this.TargetPosition = position;
@@ -112,6 +118,7 @@ namespace FunkyEnfo.Units
                 this.projectiles[i].Update(gameTime);
                 if (this.projectiles[i].Done)
                 {
+                    this.projectiles[i].Target.CurrentHealth -= 10;
                     this.projectiles.RemoveAt(i);
                 }
             }
@@ -131,6 +138,11 @@ namespace FunkyEnfo.Units
             {
                 this.SteeringBehavior.Stop();
                 this.Attack();
+            }
+
+            if (enemy != null && enemy.IsDead)
+            {
+                currentEnemy = null;
             }
         }
 

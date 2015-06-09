@@ -1,7 +1,4 @@
-﻿using System;
-
-using FunkyEnfo.Map;
-
+﻿using FunkyEnfo.Map;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -43,6 +40,15 @@ namespace FunkyEnfo.Screens
 
             this.UnitManager.Update(gameTime);
         }
+
+
+
+
+
+
+        // =========================
+        // ======== Inputs =========
+        // =========================
 
         private void HandleKeyboardInput()
         {
