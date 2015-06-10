@@ -21,6 +21,7 @@ namespace FunkyEnfo
         private TimeSpan lastUpdateTime;
         private int currentWaveUnit;
         private bool drawForces;
+        private bool drawHealthBar;
 
         public UnitManager(GameScreen screen)
         {
@@ -90,6 +91,7 @@ namespace FunkyEnfo
 
                 Units[i].Update(gameTime);
                 Units[i].DrawForces = drawForces;
+                Units[i].DrawHealthBar = drawHealthBar;
             }
 
             this.HandleWaves(gameTime);
@@ -109,6 +111,11 @@ namespace FunkyEnfo
         public void ToggleShowForces()
         {
             this.drawForces = !this.drawForces;
+        }
+
+        public void ShowHealthBar(bool show)
+        {
+            this.drawHealthBar = show;
         }
 
         public BaseUnit UnitAt(Vector2 position)

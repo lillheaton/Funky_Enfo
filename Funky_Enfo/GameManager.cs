@@ -13,6 +13,7 @@ namespace FunkyEnfo
         public GraphicsDeviceManager Graphics { get; private set; }
         public AssetsManager AssetsManager { get; private set; }
         private SpriteBatch spriteBatch;
+        private FrameCounter frameCounter;
         
         public GameManager() : base()
         {
@@ -27,6 +28,7 @@ namespace FunkyEnfo
             base.Initialize();
             this.IsMouseVisible = true;
             this.CurrentScreen = new GameScreen(this);
+            this.frameCounter = new FrameCounter();
         }
 
         // This method is called before Initialize
@@ -35,10 +37,10 @@ namespace FunkyEnfo
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.AssetsManager = new AssetsManager(this.Content, this.GraphicsDevice);
 
-            //Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            //Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            //Graphics.IsFullScreen = true;
-            //Graphics.ApplyChanges();
+            Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            Graphics.IsFullScreen = true;
+            Graphics.ApplyChanges();
         }
 
         protected override void UnloadContent()
@@ -57,8 +59,24 @@ namespace FunkyEnfo
 
         protected override void Draw(GameTime gameTime)
         {
-            this.GraphicsDevice.Clear(Color.CornflowerBlue);            
+            // Clear background
+            this.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            // Update fps counter
+            this.frameCounter.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
+            // Draw current screen
             this.CurrentScreen.Draw(spriteBatch, gameTime);
+
+            // Draw fps and other data
+            spriteBatch.Begin();
+            spriteBatch.DrawString(
+                AssetsManager.Fonts["MyFont"],
+                string.Format("FPS: {0}", this.frameCounter.AverageFramesPerSecond),
+                new Vector2(0, 0),
+                Color.Red);
+            spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }

@@ -46,6 +46,7 @@ namespace FunkyEnfo
             this.Textures.Add("1x1Texture", t1);
             this.Textures.Add("Circle_Green_18", PrimitivesHelper.CreateCirlceTexture(graphicsDevice, 18, new Color(62, 225, 54)));
             this.Textures.Add("Revenant_Projectile", contentManager.Load<Texture2D>("Revenant/Projectile"));
+            this.Textures.Add("StoneLine", contentManager.Load<Texture2D>("Stone/stone"));
         }
 
         private void LoadFonts()

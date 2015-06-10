@@ -11,6 +11,7 @@ namespace FunkyEnfo.Screens
         public UnitManager UnitManager { get; private set; }
         public AssetsManager Assets { get { return Game.AssetsManager; } }
 
+        private GameScreenInterior interior;
         private KeyboardState oldState;
         private MouseState oldMouseState;
 
@@ -21,6 +22,7 @@ namespace FunkyEnfo.Screens
         {
             this.TileEngine = new TileEngine(game.AssetsManager);
             this.UnitManager = new UnitManager(this);
+            this.interior = new GameScreenInterior(game.AssetsManager);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
@@ -31,6 +33,10 @@ namespace FunkyEnfo.Screens
             this.UnitManager.Draw(spriteBatch, gameTime);
 
             spriteBatch.End();
+
+            spriteBatch.Begin();
+            this.interior.Draw(gameTime, spriteBatch);
+            spriteBatch.End();
         }
 
         public override void Update(GameTime gameTime)
@@ -39,6 +45,7 @@ namespace FunkyEnfo.Screens
             this.HandleMouseInput();
 
             this.UnitManager.Update(gameTime);
+            this.interior.Update(gameTime);
         }
 
 
@@ -80,6 +87,8 @@ namespace FunkyEnfo.Screens
                 UnitManager.ToggleShowForces();
                 TileEngine.ToggleShowWaypoints();
             }
+
+            this.UnitManager.ShowHealthBar(newState.IsKeyDown(Keys.LeftAlt));
 
             oldState = newState;
         }
