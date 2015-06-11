@@ -35,13 +35,14 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Animation.cs" />
     <Compile Include="AssetsManager.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions\RectangleExtension.cs" />
     <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="FrameCounter.cs" />
-    <Compile Include="GameScreenInterior.cs" />
+    <Compile Include="GameUi.cs" />
     <Compile Include="Map\LineClipping.cs" />
     <Compile Include="Map\MapHelper.cs" />
     <Compile Include="Map\TileEngine.cs" />
@@ -104,6 +105,12 @@
     <Content Include="Content\Revenant\Move\revenant_moveSpritesheet.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Revenant\Portrait\portrait_sheet.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Revenant\Portrait\portrait_sheet.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Revenant\Projectile.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -114,6 +121,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Tiles\tiles_spritesheet.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Ui\footer.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Whisp\Attack\wisp_attacksheet.png">

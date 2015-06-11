@@ -36,6 +36,7 @@ namespace FunkyEnfo
             this.Spritesheets.Add("Revenant_Attack", this.LoadSpritesheet("Revenant/Attack/revenant_attacksheet", 8));
             this.Spritesheets.Add("Whisp_Attack", this.LoadSpritesheet("Whisp/Attack/wisp_attacksheet", 8));
             this.Spritesheets.Add("Whisp_Move", this.LoadSpritesheet("Whisp/Move/wisp_movesheet", 8));
+            this.Spritesheets.Add("Revenant_Portrait", this.LoadSpritesheet("Revenant/Portrait/portrait_sheet", 8));
         }
 
         private void LoadTextures()
@@ -47,6 +48,7 @@ namespace FunkyEnfo
             this.Textures.Add("Circle_Green_18", PrimitivesHelper.CreateCirlceTexture(graphicsDevice, 18, new Color(62, 225, 54)));
             this.Textures.Add("Revenant_Projectile", contentManager.Load<Texture2D>("Revenant/Projectile"));
             this.Textures.Add("StoneLine", contentManager.Load<Texture2D>("Stone/stone"));
+            this.Textures.Add("Footer", contentManager.Load<Texture2D>("Ui/footer"));
         }
 
         private void LoadFonts()

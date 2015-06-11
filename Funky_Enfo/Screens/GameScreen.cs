@@ -11,7 +11,7 @@ namespace FunkyEnfo.Screens
         public UnitManager UnitManager { get; private set; }
         public AssetsManager Assets { get { return Game.AssetsManager; } }
 
-        private GameScreenInterior interior;
+        private GameUi interior;
         private KeyboardState oldState;
         private MouseState oldMouseState;
 
@@ -22,7 +22,11 @@ namespace FunkyEnfo.Screens
         {
             this.TileEngine = new TileEngine(game.AssetsManager);
             this.UnitManager = new UnitManager(this);
-            this.interior = new GameScreenInterior(game.AssetsManager);
+            this.interior = new GameUi(
+                game.AssetsManager,
+                TileEngine,
+                game.Graphics.PreferredBackBufferWidth,
+                game.Graphics.PreferredBackBufferHeight);
         }
 
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)

@@ -84,11 +84,11 @@ namespace FunkyEnfo.Units
 
                         if (this.InRange(enemy.Position2D, AttackDistance))
                         {
-                            this.CurrentSpritesheet = Screen.Assets.Spritesheets["Whisp_Attack"];
+                            this.UnitAnimation.Spritesheet = Screen.Assets.Spritesheets["Whisp_Attack"];;
                         }
                         else
                         {
-                            this.CurrentSpritesheet = Screen.Assets.Spritesheets["Whisp_Move"];
+                            this.UnitAnimation.Spritesheet = Screen.Assets.Spritesheets["Whisp_Move"];
                         }
                     }
                     else // Enemy is not in range

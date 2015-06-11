@@ -20,7 +20,7 @@ namespace FunkyEnfo.Units
         public Vector2 TargetPosition { get; set; }
         public Vector3 Velocity { get; set; }
         public bool DrawForces { get; set; }
-        public float UnitRadius { get { return this.CurrentSpritesheet.SpriteSize / 2; } }
+        public float UnitRadius { get { return this.UnitAnimation.SpriteSize / 2; } }
         public bool DrawHealthBar { get; set; }
 
         public abstract int MaxHealth { get; set; }
@@ -28,16 +28,11 @@ namespace FunkyEnfo.Units
         public bool IsDead { get { return CurrentHealth <= 0; } }
 
         protected GameScreen Screen { get; private set; }
-        protected Spritesheet2D CurrentSpritesheet { get; set; }
-        protected Rectangle SourceRectangle { get; set; }
+        protected Animation UnitAnimation { get; private set; }
         protected float Rotate { get; set; }
-        protected TimeSpan SpriteUpdatePerMilliseconds { get; set; }
-        protected int CurrentSpritePosition { get; private set; }
-        
-        private Vector2 origin;
+
         private Vector2 circlePosition;
-        private Vector2 healtBarPosition;
-        private TimeSpan lastUpdateTime;
+        private Vector2 healtBarPosition;        
 
         protected BaseUnit(Spritesheet2D currentSpritesheet, GameScreen screen)
         {
@@ -48,16 +43,12 @@ namespace FunkyEnfo.Units
             this.Screen = screen;
             this.Position2D = new Vector2();
             this.TargetPosition = new Vector2();
-            this.SpriteUpdatePerMilliseconds = TimeSpan.FromMilliseconds(70);
-            this.CurrentSpritePosition = 0;
+            this.UnitAnimation = new Animation(currentSpritesheet, TimeSpan.FromMilliseconds(70));            
             this.Direction = Direction.South;
-
-            // Init spritesheet stuff
-            this.CurrentSpritesheet = currentSpritesheet;
-            this.SourceRectangle = new Rectangle(0, 0, (int)currentSpritesheet.SpriteSize, (int)currentSpritesheet.SpriteSize);
-            this.origin = new Vector2(this.CurrentSpritesheet.SpriteSize / 2f, currentSpritesheet.SpriteSize / 2f);
-            this.circlePosition = new Vector2(-(CurrentSpritesheet.SpriteSize / 5), (CurrentSpritesheet.SpriteSize / 4));
-            this.healtBarPosition = new Vector2(-25, -(CurrentSpritesheet.SpriteSize / 1.8f));
+            
+            // Init spritesheet stuff            
+            this.circlePosition = new Vector2(-(this.UnitAnimation.SpriteSize / 5), (this.UnitAnimation.SpriteSize / 4));
+            this.healtBarPosition = new Vector2(-25, -(this.UnitAnimation.SpriteSize / 1.8f));
         }
 
         public virtual float GetMass()
@@ -73,13 +64,13 @@ namespace FunkyEnfo.Units
         public virtual void Update(GameTime gameTime)
         {
             this.Direction = CalculateDirection();
-            HandleAnimationUpdate(gameTime);
+            this.UnitAnimation.Update(gameTime, Direction.ToString());
         }
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Draw(this.Screen.Assets.Textures["Circle_Green_18"], this.Position2D + this.circlePosition, Color.Green);
-            spriteBatch.Draw(this.CurrentSpritesheet.Texture, this.Position2D, SourceRectangle, Color.White, Rotate, origin, 1, SpriteEffects.None, 0f);
+            this.UnitAnimation.Draw(spriteBatch, this.Position2D);
 
             if (DrawHealthBar)
                 spriteBatch.Draw(this.Screen.Assets.Textures["1x1Texture"], this.Position2D + this.healtBarPosition, null, null, null, 0f, GetHealthBarScaleVectr(), Color.GreenYellow);
@@ -110,18 +101,6 @@ namespace FunkyEnfo.Units
 
             var percentage = this.CurrentHealth / (float)this.MaxHealth;
             return new Vector2(HealtBarSize * percentage, 6);
-        }
-
-        private void HandleAnimationUpdate(GameTime gameTime)
-        {
-            lastUpdateTime += gameTime.ElapsedGameTime;
-            if (lastUpdateTime > SpriteUpdatePerMilliseconds)
-            {
-                lastUpdateTime -= SpriteUpdatePerMilliseconds;
-                this.CurrentSpritePosition++;
-                var spritePosition = CurrentSpritesheet.SpritePosition[Direction.ToString() + this.CurrentSpritePosition % this.CurrentSpritesheet.PerAnimation];
-                this.SourceRectangle = new Rectangle(spritePosition.ToPoint(), new Point(this.SourceRectangle.Width, this.SourceRectangle.Height));
-            }
         }
 
         private void Forces(SpriteBatch spriteBatch)

@@ -72,7 +72,7 @@ namespace FunkyEnfo.Units
                                     .ToList());
 
                         // Set current to move spritesheet
-                        this.CurrentSpritesheet = Screen.Assets.Spritesheets["Revenant_Move"];
+                        this.UnitAnimation.Spritesheet = Screen.Assets.Spritesheets["Revenant_Move"];
                     }
                 });
         }
@@ -157,10 +157,10 @@ namespace FunkyEnfo.Units
         private void Attack()
         {
             // Set current spritesheet to attack
-            this.CurrentSpritesheet = Screen.Assets.Spritesheets["Revenant_Attack"];
+            this.UnitAnimation.Spritesheet = Screen.Assets.Spritesheets["Revenant_Attack"];
 
             // If user attacks, fire projectile on first spritesheet frame
-            if (this.CurrentSpritePosition % this.CurrentSpritesheet.PerAnimation == 0 && !hasFireProjectile)
+            if (this.UnitAnimation.CurrentSpritePosition % this.UnitAnimation.Spritesheet.PerAnimation == 0 && !hasFireProjectile)
             {
                 // This bool is used for just adding 1 projection every spritesheet cycle
                 this.hasFireProjectile = true;
@@ -169,7 +169,7 @@ namespace FunkyEnfo.Units
                 this.projectiles.Add(new RevenantProjectile(this.Position2D, this.currentEnemy, Screen.Assets.Textures["Revenant_Projectile"]));
                 FacePosition(this.currentEnemy.Position2D);
             }
-            else if (this.CurrentSpritePosition % this.CurrentSpritesheet.PerAnimation != 0)
+            else if (this.UnitAnimation.CurrentSpritePosition % this.UnitAnimation.Spritesheet.PerAnimation != 0)
             {
                 this.hasFireProjectile = false;
             }
