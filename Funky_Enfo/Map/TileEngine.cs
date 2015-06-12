@@ -61,6 +61,7 @@ namespace FunkyEnfo.Map
                     var spritesheetRectangle = new Rectangle(spritePositionX, spritePositionY, size , size);
 
                     this.Tiles[j][i] = new Tile(positionRectangle, spritesheetRectangle, this.spritesheet.Texture, (float)Math.PI * int.Parse(chunks[j][1].ToString()) / 2);
+                    this.Tiles[j][i].Color = MapHelper.GetTileColor(spritePositionName);
 
                     if (obstacle)
                     {

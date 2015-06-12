@@ -9,6 +9,7 @@ namespace FunkyEnfo.Models
         public bool IsWalkable { get; set; }
         public Rectangle Rectangle { get; private set; }
         public Vector2 Center { get; private set; }
+        public Color Color { get; set; }
 
         private Texture2D texture;
         private float rotation;

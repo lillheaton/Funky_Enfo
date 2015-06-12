@@ -110,5 +110,23 @@ namespace FunkyEnfo.Map
                     return "Cliff";
             }
         }
+
+        public static Color GetTileColor(string tileType)
+        {
+            switch (tileType)
+            {
+                case "Grass":
+                    return new Color(94, 156, 62);
+                case "DarkMarble":
+                    return new Color(150, 131, 104);
+                case "LightMarble":
+                    return new Color(155, 145, 134);
+                case "Dirt":
+                    return new Color(136, 113, 92);
+
+                default:
+                    return new Color(98, 82, 59);
+            }
+        }
     }
 }

@@ -25,6 +25,7 @@ namespace FunkyEnfo.Screens
             this.interior = new GameUi(
                 game.AssetsManager,
                 TileEngine,
+                UnitManager,
                 game.Graphics.PreferredBackBufferWidth,
                 game.Graphics.PreferredBackBufferHeight);
         }
