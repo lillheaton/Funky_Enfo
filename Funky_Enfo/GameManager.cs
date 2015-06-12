@@ -37,10 +37,10 @@ namespace FunkyEnfo
             this.spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.AssetsManager = new AssetsManager(this.Content, this.GraphicsDevice);
 
-            //Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
-            //Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
-            //Graphics.IsFullScreen = true;
-            //Graphics.ApplyChanges();
+            Graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
+            Graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height;
+            Graphics.IsFullScreen = true;
+            Graphics.ApplyChanges();
         }
 
         protected override void UnloadContent()

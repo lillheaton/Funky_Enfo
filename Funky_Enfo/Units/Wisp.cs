@@ -48,7 +48,9 @@ namespace FunkyEnfo.Units
             {
                 this.SteeringBehavior.FollowPath(currentPath);
             }
-            this.SteeringBehavior.CollisionAvoidance(this.Screen.TileEngine.Obstacles);
+
+            // Don't know if they need this?
+            //this.SteeringBehavior.CollisionAvoidance(this.Screen.TileEngine.Obstacles);
             this.SteeringBehavior.Queue(this.Screen.UnitManager.Units.ToArray());
             this.SteeringBehavior.Update(gameTime);
         }
@@ -72,9 +74,9 @@ namespace FunkyEnfo.Units
 
         private void EnemyAwareness()
         {
-            Task.Factory.StartNew(
-                () =>
-                {
+            //Task.Factory.StartNew(
+            //    () =>
+            //    {
                     var enemy = Screen.UnitManager.Player;
 
                     // See if the enemy is in range and if I can see it, then set it to current enemy
@@ -101,7 +103,7 @@ namespace FunkyEnfo.Units
                         }
                         this.currentEnemy = null;
                     }
-                });
+                //});
         }
     }
 }
