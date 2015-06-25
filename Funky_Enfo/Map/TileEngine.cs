@@ -16,6 +16,8 @@ namespace FunkyEnfo.Map
         public int Width { get; private set; }
         public int Height { get; private set; }
         public int TileSize { get; private set; }
+        public float WorldWidth { get; private set; }
+        public float WorldHeight { get; private set; }
 
         private Spritesheet2D spritesheet;
         private AssetsManager assets;
@@ -36,6 +38,8 @@ namespace FunkyEnfo.Map
             this.Height = lines.Length;
             this.Tiles = new Tile[this.Width][];
             this.TileSize = (int)this.spritesheet.SpriteSize;
+            this.WorldWidth = Width * TileSize;
+            this.WorldHeight = Height * TileSize;
             var obstacles = new List<Wall>();
 
             // Init array

@@ -12,6 +12,7 @@ namespace FunkyEnfo
         private TileEngine tileEngine;
         private UnitManager unitManager;
         private Animation portraitAnimation;
+        private Camera camera;
 
         private Vector2 portraitScale;
         private Vector2 portraitPosition;
@@ -19,15 +20,16 @@ namespace FunkyEnfo
         private float footerImageRatio;
         private Rectangle footerRectangle;
 
-        private Texture2D mapTexture;
-        private Rectangle mapRectangle;
+        public Texture2D MapTexture;
+        public Rectangle MapRectangle;
         private Rectangle mapBackgroundRectanlge;
 
-        public GameUi(AssetsManager assets, TileEngine tileEngine, UnitManager unitManager, int width, int height)
+        public GameUi(AssetsManager assets, TileEngine tileEngine, UnitManager unitManager, Camera camera, int width, int height)
         {
             this.assets = assets;
             this.tileEngine = tileEngine;
             this.unitManager = unitManager;
+            this.camera = camera;
             this.portraitAnimation = new Animation(assets.Spritesheets["Revenant_Portrait"], TimeSpan.FromMilliseconds(100));
 
             this.InitialCalculations(width, height);
@@ -51,12 +53,12 @@ namespace FunkyEnfo
 
         private void InitialCalculations(int screenWidth, int screenHeight)
         {
-            CalculateFooter(screenWidth, screenHeight);
-            CalculatePortrait(screenHeight);
-            this.CalculateMap(screenHeight);
+            this.CalculateFooterPosition(screenWidth, screenHeight);
+            this.CalculatePortraitPosition(screenHeight);
+            this.CalculateMapPosition(screenHeight);
         }
 
-        private void CalculatePortrait(int screenHeight)
+        private void CalculatePortraitPosition(int screenHeight)
         {
             const float PortraitSpace = 150f;
             var scaledSpace = PortraitSpace * footerImageRatio;
@@ -66,7 +68,7 @@ namespace FunkyEnfo
             this.portraitPosition = new Vector2(504 * footerImageRatio, screenHeight - 140 * footerImageRatio);
         }
 
-        private void CalculateFooter(int screenWidth, int screenHeight)
+        private void CalculateFooterPosition(int screenWidth, int screenHeight)
         {
             var footerAssetWidth = assets.Textures["Footer"].Width;
             var footerAssetHeight = assets.Textures["Footer"].Height;
@@ -77,7 +79,7 @@ namespace FunkyEnfo
             this.footerRectangle = new Rectangle(0, screenHeight - footerHeight, screenWidth, footerHeight);
         }
 
-        private void CalculateMap(int screenHeight)
+        private void CalculateMapPosition(int screenHeight)
         {
             const float UiMapSize = 276f;
             var mapSize = UiMapSize * footerImageRatio;
@@ -88,18 +90,18 @@ namespace FunkyEnfo
             if (mapWidth > mapHeight)
             {
                 float ratio = mapSize / mapWidth;
-                this.mapRectangle = new Rectangle(0, 0, (int)mapSize, (int)(mapHeight * ratio));
+                this.MapRectangle = new Rectangle(0, 0, (int)mapSize, (int)(mapHeight * ratio));
             }
             else
             {
                 float ratio = mapSize / mapHeight;
-                this.mapRectangle = new Rectangle(0, 0, (int)(mapWidth * ratio), (int)mapSize);
+                this.MapRectangle = new Rectangle(0, 0, (int)(mapWidth * ratio), (int)mapSize);
             }
 
-            this.mapRectangle.X = (int)((mapSize / 2f) - 35 * footerImageRatio);
-            this.mapRectangle.Y = (int)(screenHeight - mapRectangle.Height - 14 * footerImageRatio);
+            this.MapRectangle.X = (int)((mapSize / 2f) - 35 * footerImageRatio);
+            this.MapRectangle.Y = (int)(screenHeight - this.MapRectangle.Height - 14 * footerImageRatio);
 
-            mapBackgroundRectanlge = new Rectangle((int)(20 * footerImageRatio), (int)(screenHeight - mapRectangle.Height - 14 * footerImageRatio), (int)mapSize, (int)mapSize);
+            mapBackgroundRectanlge = new Rectangle((int)(20 * footerImageRatio), (int)(screenHeight - this.MapRectangle.Height - 14 * footerImageRatio), (int)mapSize, (int)mapSize);
         }
 
 
@@ -107,7 +109,17 @@ namespace FunkyEnfo
 
         private void DrawMap(SpriteBatch spriteBatch)
         {
-            mapTexture = mapTexture ?? new Texture2D(spriteBatch.GraphicsDevice, tileEngine.Tiles.Length, tileEngine.Tiles[0].Length);
+            var scaleMatric = Matrix.CreateScale(1.0f / tileEngine.TileSize);
+            var cameraTopLeftVector = Vector2.Transform(camera.ScreenToWorld(new Vector2(0, 0)), scaleMatric);
+            var cameraBottomRightVector = Vector2.Transform(camera.ScreenToWorld(new Vector2(spriteBatch.GraphicsDevice.Viewport.Width, spriteBatch.GraphicsDevice.Viewport.Height)), scaleMatric);
+
+            var cameraTop = Convert.ToInt32(cameraTopLeftVector.Y);
+            var cameraLeft = Convert.ToInt32(cameraTopLeftVector.X);
+            var cameraRight = Convert.ToInt32(cameraBottomRightVector.X);
+            var cameraBottom = Convert.ToInt32(cameraBottomRightVector.Y);
+
+
+            this.MapTexture = this.MapTexture ?? new Texture2D(spriteBatch.GraphicsDevice, tileEngine.Tiles.Length, tileEngine.Tiles[0].Length);
             var colorData = Enumerable.Repeat(Color.Red, (int)(tileEngine.Tiles.Length * tileEngine.Tiles[0].Length)).ToArray();
 
             var rows = tileEngine.Tiles.Length;
@@ -116,6 +128,7 @@ namespace FunkyEnfo
             {
                 for (int j = 0; j < columns; j++)
                 {
+                    // Draw unit if on position
                     bool unitAtPos = false;
                     for (int k = 0; k < unitManager.Units.Count; k++)
                     {
@@ -127,14 +140,26 @@ namespace FunkyEnfo
                         }
                     }
 
-                    if(!unitAtPos)
+                    // Draw camera rectangle on map
+                    if ((i == cameraLeft && j == cameraTop) || 
+                        (i == cameraLeft && j >= cameraTop && j <= cameraBottom) ||
+                        (i == cameraRight && j >= cameraTop && j <= cameraBottom) ||
+                        (i >= cameraLeft && i <= cameraRight && j == cameraTop) || 
+                        (i >= cameraLeft && i <= cameraRight && j == cameraBottom))
+                    {
+                        colorData[j * rows + i] = Color.White;
+                        continue;
+                    }
+
+                    // If no unit at position draw tile color
+                    if (!unitAtPos)
                         colorData[j * rows + i] = tileEngine.Tiles[i][j].Color;
                 }
             }
-            mapTexture.SetData(colorData);
+            this.MapTexture.SetData(colorData);
 
             spriteBatch.Draw(assets.Textures["1x1Texture"], this.mapBackgroundRectanlge, Color.Black);
-            spriteBatch.Draw(mapTexture, this.mapRectangle, Color.White);
+            spriteBatch.Draw(this.MapTexture, this.MapRectangle, Color.White);
         }
     }
 }

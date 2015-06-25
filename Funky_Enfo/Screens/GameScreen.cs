@@ -1,4 +1,6 @@
-﻿using FunkyEnfo.Map;
+﻿using System;
+
+using FunkyEnfo.Map;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,7 +13,7 @@ namespace FunkyEnfo.Screens
         public UnitManager UnitManager { get; private set; }
         public AssetsManager Assets { get { return Game.AssetsManager; } }
 
-        private GameUi interior;
+        private GameUi ui;
         private KeyboardState oldState;
         private MouseState oldMouseState;
 
@@ -22,10 +24,11 @@ namespace FunkyEnfo.Screens
         {
             this.TileEngine = new TileEngine(game.AssetsManager);
             this.UnitManager = new UnitManager(this);
-            this.interior = new GameUi(
+            this.ui = new GameUi(
                 game.AssetsManager,
                 TileEngine,
                 UnitManager,
+                Camera,
                 game.Graphics.PreferredBackBufferWidth,
                 game.Graphics.PreferredBackBufferHeight);
         }
@@ -33,14 +36,12 @@ namespace FunkyEnfo.Screens
         public override void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, transformMatrix: Camera.GetViewMatrix());
-
             this.TileEngine.Draw(spriteBatch, gameTime);
             this.UnitManager.Draw(spriteBatch, gameTime);
-
             spriteBatch.End();
 
             spriteBatch.Begin();
-            this.interior.Draw(gameTime, spriteBatch);
+            this.ui.Draw(gameTime, spriteBatch);
             spriteBatch.End();
         }
 
@@ -50,7 +51,7 @@ namespace FunkyEnfo.Screens
             this.HandleMouseInput();
 
             this.UnitManager.Update(gameTime);
-            this.interior.Update(gameTime);
+            this.ui.Update(gameTime);
         }
 
 
@@ -104,8 +105,38 @@ namespace FunkyEnfo.Screens
 
             if (newMouseState.RightButton == ButtonState.Released && oldMouseState.RightButton == ButtonState.Pressed)
             {
-                // New position for the player
-                this.UnitManager.Player.MoveToPosition(this.Camera.ScreenToWorld(newMouseState.Position.ToVector2()));
+                if (this.ui.MapRectangle.Contains(newMouseState.Position.ToVector2()))
+                {
+                    var diffX = newMouseState.X - this.ui.MapRectangle.X;
+                    var diffY = newMouseState.Y - this.ui.MapRectangle.Y;
+
+                    var x = (diffX * TileEngine.TileSize) * (ui.MapTexture.Width / (float)ui.MapRectangle.Width);
+                    var y = (diffY * TileEngine.TileSize) * (ui.MapTexture.Height / (float)ui.MapRectangle.Height);
+
+                    // New position for the player
+                    this.UnitManager.Player.MoveToPosition(new Vector2(x, y));
+                }
+                else
+                {
+                    // New position for the player
+                    this.UnitManager.Player.MoveToPosition(this.Camera.ScreenToWorld(newMouseState.Position.ToVector2()));    
+                }
+            }
+
+            if (newMouseState.LeftButton == ButtonState.Released && oldMouseState.LeftButton == ButtonState.Pressed)
+            {
+                // Move camera
+                if (this.ui.MapRectangle.Contains(newMouseState.Position.ToVector2()))
+                {
+                    var diffX = newMouseState.X - this.ui.MapRectangle.X;
+                    var diffY = newMouseState.Y - this.ui.MapRectangle.Y;
+
+                    var x = (diffX * TileEngine.TileSize) * (ui.MapTexture.Width / (float)ui.MapRectangle.Width);
+                    var y = (diffY * TileEngine.TileSize) * (ui.MapTexture.Height / (float)ui.MapRectangle.Height);
+
+                    // New position for the player
+                    this.Camera.Position = -new Vector2(x, y) + new Vector2(Width / 2f, Height / 2f);
+                }
             }
 
             if (!freeMouse)

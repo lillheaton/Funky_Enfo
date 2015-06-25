@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+
+using Microsoft.Xna.Framework;
 
 namespace FunkyEnfo
 {
@@ -31,6 +33,8 @@ namespace FunkyEnfo
             var rotationMatrix = Matrix.CreateRotationZ(Rotation);
             var scaleMatrix = Matrix.CreateScale(new Vector3(Zoom, Zoom, 1));
             var originMatrix = Matrix.CreateTranslation(new Vector3(Origin.X, Origin.Y, 0));
+
+            //Console.WriteLine(Position);
 
             return translationMatrix * rotationMatrix * scaleMatrix * originMatrix;
         }

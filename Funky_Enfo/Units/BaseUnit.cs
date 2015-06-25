@@ -69,7 +69,7 @@ namespace FunkyEnfo.Units
 
         public virtual void Draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            spriteBatch.Draw(this.Screen.Assets.Textures["Circle_Green_18"], this.Position2D + this.circlePosition, Color.Green);
+            spriteBatch.Draw(this.Screen.Assets.Textures["Circle_Green_18"], this.Position2D + this.circlePosition, Color.Black);
             this.UnitAnimation.Draw(spriteBatch, this.Position2D);
 
             if (DrawHealthBar)
