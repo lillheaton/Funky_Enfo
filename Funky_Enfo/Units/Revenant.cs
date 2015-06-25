@@ -41,6 +41,8 @@ namespace FunkyEnfo.Units
         {
             base.Update(gameTime);
 
+            if (this.CurrentHealth <= 0) IsDead = true;
+
             this.EnemyAwareness();
             this.HandleProjectilesUpdate(gameTime);
             this.HandleSteering(gameTime);
@@ -143,6 +145,7 @@ namespace FunkyEnfo.Units
             if (enemy != null && enemy.IsDead)
             {
                 currentEnemy = null;
+                this.UnitAnimation.Spritesheet = Screen.Assets.Spritesheets["Revenant_Move"];
             }
         }
 
@@ -182,7 +185,7 @@ namespace FunkyEnfo.Units
             for (int i = 0; i < this.Screen.UnitManager.Units.Count; i++)
             {
                 // This unit is in the list, continue if it finds it
-                if (this.Screen.UnitManager.Units[i] == this)
+                if (this.Screen.UnitManager.Units[i] == this || this.Screen.UnitManager.Units[i].IsDead)
                     continue;
 
                 // Check distance is less than attacking distance

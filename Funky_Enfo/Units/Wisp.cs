@@ -39,6 +39,7 @@ namespace FunkyEnfo.Units
             base.Update(gameTime);
 
             this.EnemyAwareness();
+            this.HandleDeath();
 
             if (this.currentEnemy != null)
             {
@@ -71,6 +72,17 @@ namespace FunkyEnfo.Units
         }
 
 
+        private void HandleDeath()
+        {
+            if (CurrentHealth <= 0)
+            {
+                this.UnitAnimation.Spritesheet = Screen.Assets.Spritesheets["Wisp_Death"];
+                if (this.UnitAnimation.CurrentSpritePosition % this.UnitAnimation.Spritesheet.PerAnimation == 7)
+                {
+                    IsDead = true;
+                }
+            }
+        }
 
         private void EnemyAwareness()
         {
@@ -86,7 +98,7 @@ namespace FunkyEnfo.Units
 
                         if (this.InRange(enemy.Position2D, AttackDistance))
                         {
-                            this.UnitAnimation.Spritesheet = Screen.Assets.Spritesheets["Whisp_Attack"];;
+                            this.UnitAnimation.Spritesheet = Screen.Assets.Spritesheets["Whisp_Attack"];
                         }
                         else
                         {

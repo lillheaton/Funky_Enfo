@@ -37,6 +37,7 @@ namespace FunkyEnfo
             this.Spritesheets.Add("Whisp_Attack", this.LoadSpritesheet("Whisp/Attack/wisp_attacksheet", 8));
             this.Spritesheets.Add("Whisp_Move", this.LoadSpritesheet("Whisp/Move/wisp_movesheet", 8));
             this.Spritesheets.Add("Revenant_Portrait", this.LoadSpritesheet("Revenant/Portrait/portrait_sheet", 8));
+            this.Spritesheets.Add("Wisp_Death", this.LoadSpritesheet("Whisp/Death/wisp_deathsheet", 8));
         }
 
         private void LoadTextures()

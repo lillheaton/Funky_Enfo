@@ -25,7 +25,7 @@ namespace FunkyEnfo.Units
 
         public abstract int MaxHealth { get; set; }
         public abstract int CurrentHealth { get; set; }
-        public bool IsDead { get { return CurrentHealth <= 0; } }
+        public bool IsDead { get; protected set; }
 
         protected GameScreen Screen { get; private set; }
         protected Animation UnitAnimation { get; private set; }
